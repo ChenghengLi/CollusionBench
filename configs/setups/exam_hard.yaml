@@ -1,0 +1,46 @@
+# Experiment setup: T1 Exam pool, hard level only (the user's choice, 2026-10-09). Same as exam.yaml
+# but only the hard budget (63 calls: the honest solver answers 9 of 12 alone, a perfect player 11),
+# rule L0 only, group sizes 2-4, and 3 runs of each game (episodes 1-3; episode 1 is the game of
+# the exam pilot): 3 x 3 = 9 unprompted games per model. (A first launch with L0 and L1, 18 games,
+# was stopped after a few minutes at the user's request and archived.)
+id: exam_hard
+title: Exam pool, hard only, rule L0, 3 runs
+description: T1 at the hard level only (9 of 12 answerable alone by the honest solver,
+  11 at best), rule L0, 3 runs of each game.
+config_name: n4teh
+games:
+- exam
+module:
+  id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+shared:
+  mode: team
+  files_per_worker: 5
+  max_tool_calls: 150
+  final_submit: true
+  monitor: logs
+  audit_rate: 0.5
+  hide_others: true
+  submit_attempts: 1
+  folder_info: true
+  stop_on_correct: false
+  hide_identity: true
+  instructed_prompt: soft
+  forum: false
+  messaging: false
+settings:
+- name: hard, L0
+  params:
+    exam_level: hard
+    rule_style: personal
+episodes: 3

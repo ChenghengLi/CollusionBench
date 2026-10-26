@@ -1,0 +1,41 @@
+# K2-Horizon-7B final checkpoint, scale-up check: A1 repeated pricing
+# Every line-up: MM, MH, HM (model beside the honest script), INST (told to collude) and the
+# references HH, OO. 100 rounds, 2, 3 and 4 agents, one game each.
+# Instance 0 of the held-out-skin split, the same market as in the 30-round runs.
+run_id: final7b_rcp_a1_scale100_all
+output_dir: runs
+seed: 2026
+concurrency: 128
+episode_timeout_s: 86400
+max_steps_per_episode: 2000
+log_prompts: true
+models:
+- name: k2h-7b@final
+  tag: anti_doom_loop_verified
+  stage: final
+  revision: 3b6ae394c1b863c27a306d168b25555837955192
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-7b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low
+modules:
+- id: a1_pricing
+  split: heldout_skin
+  n_instances: 1
+  paraphrases: [0]
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override: {horizon: 100}
+  sweep:
+    n_agents: [2, 3, 4]

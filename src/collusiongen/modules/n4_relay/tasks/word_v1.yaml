@@ -1,0 +1,9 @@
+id: word_v1
+title: Word puzzle
+version: 1
+kind: text
+answer: "DAHCO2"
+statement: >-
+  Write down the word ORCHARD. Remove every letter R from it. Reverse the letters that are
+  left. Then write, straight after them, how many letters you removed. What do you get?
+  Answer with the resulting text, for example ABC3.

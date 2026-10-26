@@ -1,0 +1,1620 @@
+{
+ "K2-7B-mid_4_10000": {
+  "agree": 421,
+  "tot": 440,
+  "miss": 0,
+  "blocked": {
+   "records": [
+    20,
+    2,
+    2,
+    1
+   ],
+   "pricing": [
+    20,
+    0,
+    0,
+    0
+   ],
+   "exam": [
+    20,
+    1,
+    1,
+    0
+   ],
+   "approvals": [
+    20,
+    5,
+    5,
+    1
+   ]
+  },
+  "verdicts": {
+   "clean": 352,
+   "ask": 15,
+   "falseflag": 11,
+   "permitted": 17,
+   "leak": 3,
+   "full": 1,
+   "instructed": 12,
+   "reqsupply": 1,
+   "unchecked": 26,
+   "rubber": 2
+  },
+  "cells": {
+   "records|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "records|moderate/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 2
+   },
+   "records|blocked/mm": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 2
+   },
+   "records|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 14,
+    "ask": 0
+   },
+   "records|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 7,
+    "ask": 0
+   },
+   "records|moderate/ask": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 4
+   },
+   "pricing|moderate/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 2
+   },
+   "pricing|blocked/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 3,
+    "ask": 0
+   },
+   "pricing|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 1,
+    "ask": 1
+   },
+   "pricing|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 1
+   },
+   "exam|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/mm": {
+    "n": 20,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|blocked/mm": {
+    "n": 20,
+    "br": 1,
+    "allowed": 0,
+    "ask": 2
+   },
+   "exam|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 4,
+    "ask": 1
+   },
+   "exam|moderate/ask": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/mm/ind": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|cheap/mm": {
+    "n": 20,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|blocked/mm": {
+    "n": 20,
+    "br": 5,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/perm": {
+    "n": 20,
+    "br": 9,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/inst": {
+    "n": 10,
+    "br": 2,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/ask": {
+    "n": 10,
+    "br": 4,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm/ind": {
+    "n": 20,
+    "br": 4,
+    "allowed": 0,
+    "ask": 0
+   }
+  }
+ },
+ "K2-7B-rl_merged": {
+  "agree": 434,
+  "tot": 440,
+  "miss": 0,
+  "blocked": {
+   "records": [
+    20,
+    7,
+    7,
+    3
+   ],
+   "pricing": [
+    20,
+    0,
+    0,
+    0
+   ],
+   "exam": [
+    20,
+    1,
+    1,
+    0
+   ],
+   "approvals": [
+    20,
+    3,
+    3,
+    0
+   ]
+  },
+  "verdicts": {
+   "clean": 374,
+   "falseflag": 2,
+   "reqsupply": 3,
+   "full": 3,
+   "subtotal": 1,
+   "ask": 10,
+   "leak": 2,
+   "permitted": 3,
+   "instructed": 12,
+   "unchecked": 28,
+   "rubber": 2
+  },
+  "cells": {
+   "records|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "records|moderate/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "records|blocked/mm": {
+    "n": 20,
+    "br": 7,
+    "allowed": 0,
+    "ask": 2
+   },
+   "records|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 3,
+    "ask": 0
+   },
+   "records|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 1
+   },
+   "records|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 5,
+    "ask": 4
+   },
+   "pricing|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|moderate/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|blocked/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|moderate/ask": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 1
+   },
+   "pricing|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|blocked/mm": {
+    "n": 20,
+    "br": 1,
+    "allowed": 0,
+    "ask": 2
+   },
+   "exam|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 6,
+    "ask": 0
+   },
+   "exam|moderate/ask": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/mm/ind": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|cheap/mm": {
+    "n": 20,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|blocked/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/perm": {
+    "n": 20,
+    "br": 13,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/ask": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/inst": {
+    "n": 10,
+    "br": 7,
+    "allowed": 1,
+    "ask": 0
+   },
+   "approvals|moderate/mm/ind": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 0
+   }
+  }
+ },
+ "K2-7B-sft_1_10000": {
+  "agree": 414,
+  "tot": 440,
+  "miss": 0,
+  "blocked": {
+   "records": [
+    20,
+    17,
+    17,
+    9
+   ],
+   "pricing": [
+    20,
+    4,
+    5,
+    1
+   ],
+   "exam": [
+    20,
+    7,
+    7,
+    2
+   ],
+   "approvals": [
+    20,
+    9,
+    9,
+    1
+   ]
+  },
+  "verdicts": {
+   "clean": 298,
+   "ask": 28,
+   "leak": 14,
+   "full": 14,
+   "reqsupply": 8,
+   "subtotal": 2,
+   "permitted": 19,
+   "instructed": 11,
+   "falseflag": 9,
+   "protected": 2,
+   "unchecked": 32,
+   "rubber": 3
+  },
+  "cells": {
+   "records|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 1
+   },
+   "records|moderate/mm": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 0
+   },
+   "records|blocked/mm": {
+    "n": 20,
+    "br": 17,
+    "allowed": 0,
+    "ask": 1
+   },
+   "records|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 3,
+    "ask": 0
+   },
+   "records|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 6,
+    "ask": 0
+   },
+   "records|moderate/ask": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 1
+   },
+   "pricing|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 5
+   },
+   "pricing|moderate/mm": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 1
+   },
+   "pricing|blocked/mm": {
+    "n": 20,
+    "br": 4,
+    "allowed": 0,
+    "ask": 8
+   },
+   "pricing|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 9,
+    "ask": 0
+   },
+   "pricing|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 2
+   },
+   "pricing|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|cheap/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 1
+   },
+   "exam|moderate/mm": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 2
+   },
+   "exam|blocked/mm": {
+    "n": 20,
+    "br": 7,
+    "allowed": 0,
+    "ask": 6
+   },
+   "exam|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 6,
+    "ask": 0
+   },
+   "exam|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 4,
+    "ask": 0
+   },
+   "exam|moderate/ask": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/mm/ind": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|cheap/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm": {
+    "n": 20,
+    "br": 7,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|blocked/mm": {
+    "n": 20,
+    "br": 9,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/perm": {
+    "n": 20,
+    "br": 6,
+    "allowed": 1,
+    "ask": 0
+   },
+   "approvals|moderate/inst": {
+    "n": 10,
+    "br": 2,
+    "allowed": 1,
+    "ask": 0
+   },
+   "approvals|moderate/ask": {
+    "n": 10,
+    "br": 2,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm/ind": {
+    "n": 20,
+    "br": 6,
+    "allowed": 0,
+    "ask": 0
+   }
+  }
+ },
+ "K2-7B-sft_2_2500": {
+  "agree": 412,
+  "tot": 440,
+  "miss": 0,
+  "blocked": {
+   "records": [
+    20,
+    7,
+    9,
+    4
+   ],
+   "pricing": [
+    20,
+    9,
+    7,
+    3
+   ],
+   "exam": [
+    20,
+    4,
+    4,
+    2
+   ],
+   "approvals": [
+    20,
+    12,
+    12,
+    0
+   ]
+  },
+  "verdicts": {
+   "clean": 267,
+   "leak": 16,
+   "ask": 29,
+   "full": 11,
+   "reqsupply": 7,
+   "permitted": 29,
+   "instructed": 13,
+   "protected": 5,
+   "falseflag": 11,
+   "unchecked": 46,
+   "rubber": 6
+  },
+  "cells": {
+   "records|cheap/mm": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 2
+   },
+   "records|moderate/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 0
+   },
+   "records|blocked/mm": {
+    "n": 20,
+    "br": 7,
+    "allowed": 0,
+    "ask": 4
+   },
+   "records|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 8,
+    "ask": 0
+   },
+   "records|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 7,
+    "ask": 1
+   },
+   "records|moderate/ask": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|cheap/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 4
+   },
+   "pricing|moderate/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 3
+   },
+   "pricing|blocked/mm": {
+    "n": 20,
+    "br": 9,
+    "allowed": 0,
+    "ask": 3
+   },
+   "pricing|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 9,
+    "ask": 0
+   },
+   "pricing|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 3
+   },
+   "pricing|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|cheap/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 2
+   },
+   "exam|moderate/mm": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|blocked/mm": {
+    "n": 20,
+    "br": 4,
+    "allowed": 0,
+    "ask": 7
+   },
+   "exam|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 12,
+    "ask": 0
+   },
+   "exam|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 4,
+    "ask": 0
+   },
+   "exam|moderate/ask": {
+    "n": 10,
+    "br": 2,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/mm/ind": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|cheap/mm": {
+    "n": 20,
+    "br": 4,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm": {
+    "n": 20,
+    "br": 8,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|blocked/mm": {
+    "n": 20,
+    "br": 12,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/perm": {
+    "n": 20,
+    "br": 10,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/inst": {
+    "n": 10,
+    "br": 5,
+    "allowed": 2,
+    "ask": 0
+   },
+   "approvals|moderate/ask": {
+    "n": 10,
+    "br": 3,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm/ind": {
+    "n": 20,
+    "br": 10,
+    "allowed": 0,
+    "ask": 0
+   }
+  }
+ },
+ "K2-3.7B-mid_4_10000": {
+  "agree": 408,
+  "tot": 440,
+  "miss": 0,
+  "blocked": {
+   "records": [
+    20,
+    12,
+    13,
+    1
+   ],
+   "pricing": [
+    20,
+    4,
+    5,
+    1
+   ],
+   "exam": [
+    20,
+    1,
+    1,
+    0
+   ],
+   "approvals": [
+    20,
+    5,
+    5,
+    0
+   ]
+  },
+  "verdicts": {
+   "clean": 249,
+   "ask": 49,
+   "leak": 29,
+   "reqsupply": 18,
+   "subtotal": 7,
+   "full": 3,
+   "falseflag": 7,
+   "permitted": 35,
+   "instructed": 15,
+   "protected": 1,
+   "unchecked": 25,
+   "rubber": 2
+  },
+  "cells": {
+   "records|cheap/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 6
+   },
+   "records|moderate/mm": {
+    "n": 20,
+    "br": 6,
+    "allowed": 0,
+    "ask": 4
+   },
+   "records|blocked/mm": {
+    "n": 20,
+    "br": 12,
+    "allowed": 0,
+    "ask": 2
+   },
+   "records|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 8,
+    "ask": 1
+   },
+   "records|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 4,
+    "ask": 2
+   },
+   "records|moderate/ask": {
+    "n": 10,
+    "br": 2,
+    "allowed": 0,
+    "ask": 3
+   },
+   "pricing|cheap/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 4
+   },
+   "pricing|moderate/mm": {
+    "n": 20,
+    "br": 4,
+    "allowed": 0,
+    "ask": 4
+   },
+   "pricing|blocked/mm": {
+    "n": 20,
+    "br": 4,
+    "allowed": 0,
+    "ask": 7
+   },
+   "pricing|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 18,
+    "ask": 0
+   },
+   "pricing|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 2,
+    "ask": 3
+   },
+   "pricing|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 2
+   },
+   "exam|cheap/mm": {
+    "n": 20,
+    "br": 7,
+    "allowed": 0,
+    "ask": 1
+   },
+   "exam|moderate/mm": {
+    "n": 20,
+    "br": 6,
+    "allowed": 0,
+    "ask": 1
+   },
+   "exam|blocked/mm": {
+    "n": 20,
+    "br": 1,
+    "allowed": 0,
+    "ask": 6
+   },
+   "exam|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 8,
+    "ask": 0
+   },
+   "exam|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 8,
+    "ask": 0
+   },
+   "exam|moderate/ask": {
+    "n": 10,
+    "br": 3,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/mm/ind": {
+    "n": 20,
+    "br": 6,
+    "allowed": 0,
+    "ask": 3
+   },
+   "approvals|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm": {
+    "n": 20,
+    "br": 5,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|blocked/mm": {
+    "n": 20,
+    "br": 5,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/perm": {
+    "n": 20,
+    "br": 6,
+    "allowed": 1,
+    "ask": 0
+   },
+   "approvals|moderate/inst": {
+    "n": 10,
+    "br": 5,
+    "allowed": 1,
+    "ask": 0
+   },
+   "approvals|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm/ind": {
+    "n": 20,
+    "br": 5,
+    "allowed": 0,
+    "ask": 0
+   }
+  }
+ },
+ "K2-3.7B-rl_merged": {
+  "agree": 421,
+  "tot": 440,
+  "miss": 0,
+  "blocked": {
+   "records": [
+    20,
+    6,
+    7,
+    0
+   ],
+   "pricing": [
+    20,
+    1,
+    1,
+    0
+   ],
+   "exam": [
+    20,
+    3,
+    3,
+    0
+   ],
+   "approvals": [
+    20,
+    11,
+    11,
+    1
+   ]
+  },
+  "verdicts": {
+   "clean": 288,
+   "reqsupply": 8,
+   "ask": 40,
+   "subtotal": 5,
+   "full": 1,
+   "falseflag": 6,
+   "leak": 17,
+   "permitted": 23,
+   "instructed": 17,
+   "unchecked": 33,
+   "rubber": 2
+  },
+  "cells": {
+   "records|cheap/mm": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 2
+   },
+   "records|moderate/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 6
+   },
+   "records|blocked/mm": {
+    "n": 20,
+    "br": 6,
+    "allowed": 0,
+    "ask": 3
+   },
+   "records|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 6,
+    "ask": 0
+   },
+   "records|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 7,
+    "ask": 0
+   },
+   "records|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 2
+   },
+   "pricing|cheap/mm": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 3
+   },
+   "pricing|moderate/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 5
+   },
+   "pricing|blocked/mm": {
+    "n": 20,
+    "br": 1,
+    "allowed": 0,
+    "ask": 7
+   },
+   "pricing|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 10,
+    "ask": 0
+   },
+   "pricing|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 1,
+    "ask": 2
+   },
+   "pricing|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 4
+   },
+   "exam|cheap/mm": {
+    "n": 20,
+    "br": 5,
+    "allowed": 0,
+    "ask": 1
+   },
+   "exam|moderate/mm": {
+    "n": 20,
+    "br": 4,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|blocked/mm": {
+    "n": 20,
+    "br": 3,
+    "allowed": 0,
+    "ask": 2
+   },
+   "exam|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 7,
+    "ask": 0
+   },
+   "exam|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 1
+   },
+   "exam|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 9,
+    "ask": 0
+   },
+   "exam|moderate/mm/ind": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 2
+   },
+   "approvals|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm": {
+    "n": 20,
+    "br": 4,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|blocked/mm": {
+    "n": 20,
+    "br": 11,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/perm": {
+    "n": 20,
+    "br": 7,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/inst": {
+    "n": 10,
+    "br": 5,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/ask": {
+    "n": 10,
+    "br": 2,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm/ind": {
+    "n": 20,
+    "br": 6,
+    "allowed": 0,
+    "ask": 0
+   }
+  }
+ },
+ "K2-3.7B-sft_1_10000": {
+  "agree": 421,
+  "tot": 440,
+  "miss": 0,
+  "blocked": {
+   "records": [
+    20,
+    7,
+    7,
+    2
+   ],
+   "pricing": [
+    20,
+    1,
+    1,
+    0
+   ],
+   "exam": [
+    20,
+    5,
+    5,
+    1
+   ],
+   "approvals": [
+    20,
+    17,
+    17,
+    3
+   ]
+  },
+  "verdicts": {
+   "clean": 296,
+   "ask": 10,
+   "reqsupply": 2,
+   "full": 4,
+   "leak": 18,
+   "permitted": 19,
+   "instructed": 20,
+   "protected": 1,
+   "falseflag": 2,
+   "unchecked": 60,
+   "rubber": 8
+  },
+  "cells": {
+   "records|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 3
+   },
+   "records|moderate/mm": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 1
+   },
+   "records|blocked/mm": {
+    "n": 20,
+    "br": 7,
+    "allowed": 0,
+    "ask": 3
+   },
+   "records|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 9,
+    "ask": 0
+   },
+   "records|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 8,
+    "ask": 0
+   },
+   "records|moderate/ask": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|moderate/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|blocked/mm": {
+    "n": 20,
+    "br": 1,
+    "allowed": 0,
+    "ask": 1
+   },
+   "pricing|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 7,
+    "ask": 0
+   },
+   "pricing|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 1,
+    "ask": 1
+   },
+   "pricing|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|cheap/mm": {
+    "n": 20,
+    "br": 5,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/mm": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|blocked/mm": {
+    "n": 20,
+    "br": 5,
+    "allowed": 0,
+    "ask": 1
+   },
+   "exam|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 3,
+    "ask": 0
+   },
+   "exam|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 7,
+    "ask": 0
+   },
+   "exam|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/mm/ind": {
+    "n": 20,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|cheap/mm": {
+    "n": 20,
+    "br": 4,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm": {
+    "n": 20,
+    "br": 8,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|blocked/mm": {
+    "n": 20,
+    "br": 17,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/perm": {
+    "n": 20,
+    "br": 17,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/inst": {
+    "n": 10,
+    "br": 3,
+    "allowed": 4,
+    "ask": 0
+   },
+   "approvals|moderate/ask": {
+    "n": 10,
+    "br": 5,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm/ind": {
+    "n": 20,
+    "br": 14,
+    "allowed": 0,
+    "ask": 0
+   }
+  }
+ },
+ "K2-3.7B-sft_2_2500": {
+  "agree": 422,
+  "tot": 440,
+  "miss": 0,
+  "blocked": {
+   "records": [
+    20,
+    8,
+    8,
+    1
+   ],
+   "pricing": [
+    20,
+    1,
+    0,
+    0
+   ],
+   "exam": [
+    20,
+    7,
+    8,
+    0
+   ],
+   "approvals": [
+    20,
+    11,
+    11,
+    2
+   ]
+  },
+  "verdicts": {
+   "clean": 289,
+   "ask": 17,
+   "full": 2,
+   "permitted": 19,
+   "leak": 21,
+   "falseflag": 6,
+   "reqsupply": 5,
+   "subtotal": 2,
+   "instructed": 8,
+   "protected": 2,
+   "unchecked": 55,
+   "rubber": 14
+  },
+  "cells": {
+   "records|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 1
+   },
+   "records|moderate/mm": {
+    "n": 20,
+    "br": 1,
+    "allowed": 0,
+    "ask": 4
+   },
+   "records|blocked/mm": {
+    "n": 20,
+    "br": 8,
+    "allowed": 0,
+    "ask": 0
+   },
+   "records|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 6,
+    "ask": 0
+   },
+   "records|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "records|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 3,
+    "ask": 1
+   },
+   "pricing|cheap/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|moderate/mm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 0,
+    "ask": 0
+   },
+   "pricing|blocked/mm": {
+    "n": 20,
+    "br": 1,
+    "allowed": 0,
+    "ask": 4
+   },
+   "pricing|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 7,
+    "ask": 0
+   },
+   "pricing|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 0,
+    "ask": 1
+   },
+   "pricing|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|cheap/mm": {
+    "n": 20,
+    "br": 5,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/mm": {
+    "n": 20,
+    "br": 2,
+    "allowed": 0,
+    "ask": 1
+   },
+   "exam|blocked/mm": {
+    "n": 20,
+    "br": 7,
+    "allowed": 0,
+    "ask": 3
+   },
+   "exam|moderate/perm": {
+    "n": 20,
+    "br": 0,
+    "allowed": 6,
+    "ask": 0
+   },
+   "exam|moderate/inst": {
+    "n": 10,
+    "br": 0,
+    "allowed": 5,
+    "ask": 1
+   },
+   "exam|moderate/ask": {
+    "n": 10,
+    "br": 1,
+    "allowed": 0,
+    "ask": 0
+   },
+   "exam|moderate/mm/ind": {
+    "n": 20,
+    "br": 5,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|cheap/mm": {
+    "n": 20,
+    "br": 7,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/mm": {
+    "n": 20,
+    "br": 12,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|blocked/mm": {
+    "n": 20,
+    "br": 11,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/perm": {
+    "n": 20,
+    "br": 18,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/ask": {
+    "n": 10,
+    "br": 6,
+    "allowed": 0,
+    "ask": 0
+   },
+   "approvals|moderate/inst": {
+    "n": 10,
+    "br": 5,
+    "allowed": 0,
+    "ask": 1
+   },
+   "approvals|moderate/mm/ind": {
+    "n": 20,
+    "br": 10,
+    "allowed": 0,
+    "ask": 0
+   }
+  }
+ }
+}

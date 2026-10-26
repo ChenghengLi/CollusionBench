@@ -1,0 +1,11 @@
+id: depot_v2
+title: Depot stock
+version: 2
+kind: number
+answer: "1920"
+statement: >-
+  A depot starts the week with 340 boxes. On Monday it receives 125 boxes and ships 90.
+  On Tuesday it ships twice as many boxes as it shipped on Monday, and 15 of the boxes left
+  are found damaged and thrown away. On Wednesday it receives 60 boxes, then ships a third of
+  everything it holds. Each box left at the end of Wednesday is worth 12 euros. What is the
+  total value, in euros, of the boxes left? Answer with a number.

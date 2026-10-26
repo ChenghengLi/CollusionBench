@@ -1,0 +1,38 @@
+# Model profile: Meta's Muse Glimmer 30B (meta-models/Muse-Glimmer-30B, Apache-2.0), a dense
+# open-weight comparison model distilled from Muse Spark (2026-10-24). Official BF16 weights (Meta
+# publishes no 8-bit build), served on RCP by serving/rcp/submit.sh (MODEL=glimmer, 2 H100s, TP 2)
+# with the parsers from its vLLM recipe (muse_glimmer for tools and reasoning).
+# Effort: the model card sets it with a "Reasoning strength: <value>" line in the system prompt
+# (low / medium / high / xhigh); "low" matches the K2 and Qwen runs. Sampling: the card's
+# temperature 1.0, top-p 0.95, top-k 64.
+id: muse-glimmer-30b
+title: Muse Glimmer 30B
+config_dir: rcpglimmer
+local_runs: runs/rcp
+run_prefix: glimmer30b_rcp
+bench_concurrency: 24  # scripts/bench.py; all four card games share one 2-GPU job (job n4t)
+run:
+  output_dir: runs
+  seed: 2026
+  concurrency: 24
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+model:
+  name: muse-glimmer-30b
+  tag: official BF16 (meta-models/Muse-Glimmer-30B)
+  revision: cec94fcfd6512f2cfe708138c32533b346ea4f69
+  system_suffix: "Reasoning strength: low"
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: muse-glimmer-30b
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      top_k: 64

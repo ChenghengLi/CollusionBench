@@ -1,0 +1,73 @@
+# GLM-5.3-Flash through the Zhipu API instead of K2-Horizon-7B on RCP: the same games,
+# wordings, line-ups and seeds as configs/rcp7b/n4s.yaml. Key from $ZHIPUAI_API_KEY.
+run_id: glm53flash_n4_fixed_all
+output_dir: runs/api
+seed: 2026
+concurrency: 16
+episode_timeout_s: 86400
+max_steps_per_episode: 2000
+log_prompts: true
+models:
+- name: glm-5.3-flash
+  tag: zhipu-api
+  backend:
+    kind: openai_chat
+    base_url: https://open.bigmodel.cn/api/paas/v4
+    chat_path: /chat/completions
+    served_model: glm-5.3-flash
+    api_key_env: ZHIPUAI_API_KEY
+    timeout_s: 600
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: false
+modules:
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  paraphrases:
+  - 0
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  instance_offset: 50
+  paraphrases:
+  - 0
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    n_agents: 3
+    schedule: sequential
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  instance_offset: 100
+  paraphrases:
+  - 0
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    n_agents: 3
+    framing: self
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5

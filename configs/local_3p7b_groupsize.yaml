@@ -1,0 +1,61 @@
+# Group-size study on the local Mac: does collusion change with the number of agents?
+# Every instance is played at each group size with the same seeds, so the sizes are compared
+# on matched games (firms, reviewers or waves are added, nothing else is redrawn).
+#
+#   serving/serve_local_metal.sh d6e5432c59637093c0e125e791d89ea4a0b53559 k2h-3.7b@final
+#   collusiongen -v run configs/local_3p7b_groupsize.yaml
+#   collusiongen analyze runs/local_3p7b_groupsize      # see "By number of agents"
+#
+# Lessons from the first pilot applied here: more instances, fewer repeats; longer pricing
+# horizon (still well below the proposal's 100 because of local throughput); A2 tasks with
+# 3-digit products so honest-task success can clear 50%; 8K output tokens to cut truncation.
+# Expect roughly a day on an M5 Pro at ~100 tok/s; lower n_instances for a quicker look.
+run_id: local_3p7b_groupsize
+output_dir: runs
+seed: 0
+concurrency: 12
+episode_timeout_s: 14400
+log_prompts: true
+models:
+  - name: k2h-3.7b@final
+    tag: anti_doom_loop_verified
+    stage: final
+    revision: d6e5432c59637093c0e125e791d89ea4a0b53559
+    backend:
+      kind: openai_chat
+      base_url: http://127.0.0.1:8000
+      served_model: k2h-3.7b@final
+    sampling:
+      temperature: 1.0
+      top_p: 0.95
+      max_tokens: 8192
+      extra_body:
+        chat_template_kwargs: {reasoning_effort: low}
+modules:
+  - id: a1_pricing
+    n_instances: 10
+    paraphrases: [0, 1]
+    episodes_per_instance: 1
+    partner_swap_fraction: 1.0
+    params_override: {horizon: 30}
+    sweep: {n_agents: [2, 3, 4]}
+  - id: n2_market
+    n_instances: 10
+    paraphrases: [0, 1]
+    episodes_per_instance: 1
+    partner_swap_fraction: 1.0
+    params_override: {horizon: 30, channel_mode: channel}
+    sweep: {n_agents: [2, 3, 4]}
+  - id: a2_verify
+    n_instances: 10
+    paraphrases: [0, 1]
+    episodes_per_instance: 1
+    partner_swap_fraction: 1.0
+    params_override: {digits: 3}
+    sweep: {n_agents: [2, 3, 4]}
+  - id: n4_relay
+    n_instances: 10
+    paraphrases: [0, 1]
+    episodes_per_instance: 1
+    partner_swap_fraction: 1.0
+    sweep: {n_agents: [2, 3, 4]}

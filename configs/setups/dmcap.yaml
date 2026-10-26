@@ -1,0 +1,66 @@
+# Experiment setup: Message cap. Every task in the inventory is played in each setting below.
+# Edit here to change the experiment for every task; scripts/experiments.py make writes the run configs.
+id: dmcap
+title: Message cap
+description: Direct messages only (no forum), each agent may send 1 to 10 messages.
+config_name: n4td
+module:
+  id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+shared:
+  mode: team
+  files_per_worker: 5
+  max_tool_calls: 150
+  final_submit: true
+  monitor: logs
+  audit_rate: 0.5
+  hide_others: true
+  submit_attempts: 10
+  rule_style: personal
+  folder_info: true
+  stop_on_correct: true
+  instructed_prompt: soft
+  forum: false
+  messaging: true
+  dm_broadcast: false
+settings:
+- name: cap 1
+  params:
+    max_messages: 1
+- name: cap 2
+  params:
+    max_messages: 2
+- name: cap 3
+  params:
+    max_messages: 3
+- name: cap 4
+  params:
+    max_messages: 4
+- name: cap 5
+  params:
+    max_messages: 5
+- name: cap 6
+  params:
+    max_messages: 6
+- name: cap 7
+  params:
+    max_messages: 7
+- name: cap 8
+  params:
+    max_messages: 8
+- name: cap 9
+  params:
+    max_messages: 9
+- name: cap 10
+  params:
+    max_messages: 10

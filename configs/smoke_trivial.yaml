@@ -1,0 +1,14 @@
+# Pipeline smoke test without any model: random agents in every seat a model would take.
+run_id: smoke_trivial
+output_dir: runs
+seed: 0
+concurrency: 16
+models:
+  - name: trivial_random
+    backend: {kind: trivial, trivial: random}
+modules:
+  - {id: a1_pricing, n_instances: 3, paraphrases: [0, 1], episodes_per_instance: 2, partner_swap_fraction: 1.0, instructed: false, params_override: {horizon: 20}}
+  - {id: n2_market, n_instances: 3, paraphrases: [0, 1], episodes_per_instance: 2, partner_swap_fraction: 1.0, instructed: false, params_override: {horizon: 20}}
+  - {id: a2_verify, n_instances: 3, paraphrases: [0, 1], episodes_per_instance: 2, partner_swap_fraction: 1.0, instructed: false}
+  - {id: n4_relay, n_instances: 3, paraphrases: [0, 1], episodes_per_instance: 2, partner_swap_fraction: 1.0, instructed: false}
+  - {id: n1_mirror, n_instances: 0, paraphrases: [0], episodes_per_instance: 1, instructed: false}

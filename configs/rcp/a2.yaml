@@ -1,0 +1,54 @@
+# RCP (EPFL RunAI) run of the final-checkpoint deep dive, experiment a2_verify only.
+# Generated from configs/final_deep_native.yaml: same modules, splits, wordings, swaps and
+# sampling, except per-request seeds (supported on CUDA) and concurrency 128 for one H100.
+# Launched by serving/rcp/submit.sh; the job serves the model on 127.0.0.1:8000 itself.
+run_id: final_rcp_a2
+output_dir: runs
+seed: 2026
+concurrency: 128
+episode_timeout_s: 28800
+max_steps_per_episode: 2000
+log_prompts: true
+models:
+- name: k2h-3.7b@final
+  tag: anti_doom_loop_verified
+  stage: final
+  revision: d6e5432c59637093c0e125e791d89ea4a0b53559
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-3.7b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low
+modules:
+- id: a2_verify
+  split: heldout_skin
+  n_instances: 8
+  paraphrases:
+  - 0
+  - 1
+  - 2
+  episodes_per_instance: 1
+  partner_swap_fraction: 0.5
+  params_override:
+    digits: 3
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+- id: a2_verify
+  split: heldout_params
+  n_instances: 4
+  paraphrases:
+  - 3
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0

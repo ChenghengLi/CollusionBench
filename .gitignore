@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.venv/
+.venv-vllm/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS and editor
+.DS_Store
+.claude/
+.idea/
+.vscode/
+
+# Run outputs and logs (large; kept locally)
+runs/
+results/
+logs/
+
+# Instructed-condition prompts and collusion-increasing material are never released
+private_prompts/*
+!private_prompts/README.md
+
+# Large analysis dumps: game transcripts and audit packets
+analysis/claude_haiku_5_5/
+analysis/deepseek_v41_flash/
+analysis/glm_5_3_flash_wafer/
+analysis/gpt_6_1_sol/
+analysis/gpt_6_luna/
+analysis/mimo_v2_6_flash/
+analysis/card_audit_2026-10/**/packets/
+analysis/card_audit_2026-10/**/*.txt
+analysis/scorer_only_2026-10/out/
+
+# Paper: local backups and LaTeX build files
+paper/apart_2026_backups/
+*.aux
+*.log
+*.blg
+*.bbl
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz

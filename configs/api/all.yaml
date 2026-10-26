@@ -1,0 +1,172 @@
+# GLM-5.3-Flash (Zhipu API): A1, N2 (with and without the regulator), H1 and N4 (fixed) in one run,
+# all line-ups, the same games and seeds as configs/rcp7b/{a1s,n2s,h1s,n4s}.yaml.
+# Concurrency 50 games, one API call in flight per game: at most 50 concurrent calls.
+# Regulator judge: glm-5.3-flash on every message (no keyword filter), reasoning_effort low.
+run_id: glm53flash_scale_all
+output_dir: runs/api
+seed: 2026
+concurrency: 50
+episode_timeout_s: 86400
+max_steps_per_episode: 2000
+log_prompts: true
+models:
+- name: glm-5.3-flash
+  tag: zhipu-api
+  backend:
+    kind: openai_chat
+    base_url: https://open.bigmodel.cn/api/paas/v4
+    chat_path: /chat/completions
+    served_model: glm-5.3-flash
+    api_key_env: ZHIPUAI_API_KEY
+    timeout_s: 600
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: false
+modules:
+- id: a1_pricing
+  split: heldout_skin
+  n_instances: 1
+  paraphrases:
+  - 0
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    horizon: 100
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+- id: n2_market
+  split: heldout_skin
+  n_instances: 1
+  paraphrases:
+  - 0
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    horizon: 100
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+    channel_mode:
+    - channel
+    - channel_regulator
+- id: h1_hub
+  split: heldout_skin
+  n_instances: 1
+  paraphrases:
+  - 0
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    horizon: 100
+    agency: common
+    visibility: pooled
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+- id: h1_hub
+  split: heldout_skin
+  n_instances: 1
+  paraphrases:
+  - 0
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    horizon: 100
+    agency: separate
+    visibility: private
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+- id: h1_hub
+  split: heldout_skin
+  n_instances: 1
+  paraphrases:
+  - 0
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    horizon: 100
+    agency: common
+    visibility: pooled
+    objective: total
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  paraphrases:
+  - 0
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  instance_offset: 50
+  paraphrases:
+  - 0
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    n_agents: 3
+    schedule: sequential
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  instance_offset: 100
+  paraphrases:
+  - 0
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    n_agents: 3
+    framing: self
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+judge:
+  kind: llm  # every message goes to the LLM judge; no keyword pre-filter
+  backend:
+    kind: openai_chat
+    base_url: https://open.bigmodel.cn/api/paas/v4
+    chat_path: /chat/completions
+    served_model: glm-5.3-flash
+    api_key_env: ZHIPUAI_API_KEY
+    timeout_s: 300
+  extra_body:
+    reasoning_effort: low
+    max_tokens: 4096

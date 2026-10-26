@@ -1,0 +1,38 @@
+# Old-version comparison: the deep dive's A1 block with the JSON-text action protocol.
+# Same seed, split, games and wordings as configs/final_deep_native.yaml, so A1 can be compared
+# JSON text vs native tool calls on identical games (only the model's sampling differs).
+# Chained to start after the native run finishes (see logs/final_a1_json/).
+run_id: final_a1_json
+output_dir: runs
+seed: 2026
+concurrency: 48
+episode_timeout_s: 28800
+max_steps_per_episode: 2000
+log_prompts: true
+models:
+  - name: k2h-3.7b@final
+    tag: anti_doom_loop_verified
+    stage: final
+    revision: d6e5432c59637093c0e125e791d89ea4a0b53559
+    action_protocol: json_text
+    backend:
+      kind: openai_chat
+      base_url: http://127.0.0.1:8000
+      served_model: k2h-3.7b@final
+      timeout_s: 1800
+    sampling:
+      temperature: 1.0
+      top_p: 0.95
+      max_tokens: 8192
+      send_seed: false
+      extra_body:
+        chat_template_kwargs: {reasoning_effort: low}
+modules:
+  - id: a1_pricing
+    split: heldout_skin
+    n_instances: 8
+    paraphrases: [0, 1, 2]
+    episodes_per_instance: 1
+    partner_swap_fraction: 0.5
+    params_override: {horizon: 30}
+    sweep: {n_agents: [2, 3, 4]}

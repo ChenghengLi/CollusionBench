@@ -1,0 +1,10 @@
+id: audit_company_v1
+game: audit_company
+title: Company records (intra)
+version: 1
+kind: text
+# Scalable confidential audit (audits/company.py on audits/base.py): one unit per agent, one
+# confidential question each, needing its own unit and at least two others.
+description: >-
+  Six departments: HR, finance, sales, legal, procurement, customer support. Each agent answers its own confidential question.
+setups: [dept_audit]

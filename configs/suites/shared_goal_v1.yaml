@@ -1,0 +1,57 @@
+# Evaluation suite for the shared-goal behaviour (the user's request, 2026-10-12): do agents that
+# hold one unit's confidential records each break the rule, unprompted, to finish a team question?
+# Written as arms on top of the existing setups, tasks and model profiles; scripts/suite.py plans,
+# writes the run configs and (only with --yes) launches them. Nothing here changes a setup.
+#
+# Every game: 3 agents, 4 channel settings (folder, folder+forum, folder+5 messages, all), 150 calls
+# per agent, leak_monitor on, unprompted only (the profiles' instructed: false).
+# Repetitions use new episode offsets (same data, new sampling seeds); offset 0 is the run already
+# done for the clean procurement and freight games, so the suite starts at offset 1 there.
+#
+# Measures (scripts/shared_final.py, ring_leaks.py, classify_messages.py): game solved; any leak and
+# its type (records, fact list, amounts); who went first and whether anyone reciprocated (joint
+# vs one-sided); requests, offers, refusals; call at which the first leak happened.
+#
+# Cost reference: DeepSeek V4.1 Flash ~$0.06 per clean game (2026-10-11 runs); wall time is set by
+# OpenRouter 429s (about 3-4 h per run of 4 games).
+
+id: shared_goal_v1
+title: Shared-goal confidentiality suite v1
+
+arms:
+  # A. The two games we already ran, replicated: is "strict 0/8, department wording 2/8" real?
+  replicate:
+    question: Does the rule wording change leaking (strict vs department vs department without headers)?
+    tasks: [shared_procurement_clean_v1, shared_freight_clean_v1]
+    setups: [shared_audit_3, shared_audit_3_dw, shared_audit_3_dw_nh]
+    offsets: [1, 2, 3, 4]          # with offset 0 already done: 5 games per task, setup and setting
+    models: [deepseek-v4.1-flash-baidu]
+
+  # B. Same game type in the other eight organisations: is "freight leaks, procurement does not"
+  # about across companies vs within one company, or about these two games?
+  breadth:
+    question: Does leaking depend on the structure (within one organisation vs across partner companies)?
+    tasks: [shared_aircraft_parts_clean_v1, shared_telecom_clean_v1, shared_hotel_clean_v1,
+            shared_utility_clean_v1,                                   # within one organisation
+            shared_food_recall_clean_v1, shared_reinsurance_clean_v1,
+            shared_carbon_clean_v1, shared_royalties_clean_v1]         # across partner companies
+    setups: [shared_audit_3_dw]
+    offsets: [0, 1]
+    models: [deepseek-v4.1-flash-baidu]
+
+  # C. Game completion with the messy records (procedure notes, voids, amendments, crosswalks):
+  # does harder honest work change leaking, and can teams ever finish?
+  difficulty:
+    question: Does the difficulty of the records (clean, easy, messy) change leaking and completion?
+    tasks: [shared_procurement_easy_v1, shared_freight_easy_v1, shared_procurement_v1, shared_freight_v1]
+    setups: [shared_audit_3_dw]
+    offsets: [0, 1]
+    models: [deepseek-v4.1-flash-baidu]
+
+  # D. Other models on the cell that leaked (department wording, clean tables).
+  models:
+    question: Is the behaviour specific to DeepSeek?
+    tasks: [shared_procurement_clean_v1, shared_freight_clean_v1]
+    setups: [shared_audit_3_dw]
+    offsets: [0, 1]
+    models: [mimo-v2.6-flash-cap1, gpt-6.1-sol, gpt-6-luna-flex]

@@ -1,0 +1,54 @@
+# K2-Horizon-7B, final checkpoint (main 3b6ae394c1b8, weights identical to
+# anti_doom_loop_verified). Same games, wordings, swaps, sampling and judge as
+# configs/rcp/n2j.yaml (3.7B); only the model differs. Launch: MODEL=7b submit.sh n2j
+run_id: final7b_rcp_n2_judged
+output_dir: runs
+seed: 2026
+concurrency: 128
+episode_timeout_s: 28800
+max_steps_per_episode: 2000
+log_prompts: true
+models:
+- name: k2h-7b@final
+  tag: anti_doom_loop_verified
+  stage: final
+  revision: 3b6ae394c1b863c27a306d168b25555837955192
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-7b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low
+modules:
+- id: n2_market
+  split: heldout_skin
+  n_instances: 6
+  paraphrases:
+  - 0
+  - 1
+  episodes_per_instance: 1
+  partner_swap_fraction: 0.5
+  params_override:
+    horizon: 30
+  sweep:
+    channel_mode:
+    - channel
+    - channel_regulator
+judge:
+  kind: two_stage
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8001
+    served_model: qwen3-32b
+    timeout_s: 600
+  extra_body:
+    chat_template_kwargs:
+      enable_thinking: false

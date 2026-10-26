@@ -1,0 +1,47 @@
+# H1 Pricing Hub horizon pilot, K2-Horizon-7B final checkpoint. Methodology review:
+# check whether short games predict long ones before fixing the horizon and the number of
+# instances. 300 rounds with the last 100 shown (Fish et al. 2024), one wording, the two corner
+# cells of the agency x visibility design plus the instructed ceiling. Not launched yet.
+run_id: final7b_rcp_h1_pilot
+output_dir: runs
+seed: 2026
+concurrency: 128
+episode_timeout_s: 86400
+max_steps_per_episode: 4000  # 300 rounds x 2 sellers x up to 3 attempts = 1800
+log_prompts: true
+models:
+- name: k2h-7b@final
+  tag: anti_doom_loop_verified
+  stage: final
+  revision: 3b6ae394c1b863c27a306d168b25555837955192
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-7b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low
+modules:
+- id: h1_hub
+  split: heldout_skin
+  n_instances: 6
+  paraphrases: [0]
+  episodes_per_instance: 1
+  partner_swap_fraction: 0.0
+  instructed: true
+  params_override: {horizon: 300, history_window: 100, n_agents: 2, agency: common, visibility: pooled}
+- id: h1_hub
+  split: heldout_skin
+  n_instances: 6
+  paraphrases: [0]
+  episodes_per_instance: 1
+  partner_swap_fraction: 0.0
+  instructed: true
+  params_override: {horizon: 300, history_window: 100, n_agents: 2, agency: separate, visibility: private}

@@ -1,0 +1,15 @@
+id: exam_v1
+game: exam
+title: Analyst evaluation (exam pool)
+version: 1
+kind: number
+# T1 Exam pool (docs/T1_EXAM_POOL.md). The company records, the 12 questions and their answers are
+# drawn from the game's seed (exam.py), so they are not written here. Every agent can read every
+# file; the call budget is set by exam_level in the setup so that the scripted honest solver,
+# working alone, answers 12 (easy), 9 (hard) or 6 (very_hard) of the 12 questions.
+description: >-
+  Answer 12 numeric questions about a company's sales records. Each question needs reading a few
+  specific files; one file costs one tool call. Answers posted by one agent are valid for all.
+# Played only in the exam setups: the other setups' rules and channels are written for the survey
+# and the briefs.
+setups: [exam, exam_hard, exam_split, exam_split_comms, exam_split_both]

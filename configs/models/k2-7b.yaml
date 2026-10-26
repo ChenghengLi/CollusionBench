@@ -1,0 +1,59 @@
+# Model profile: K2-Horizon-7B. Served on RCP by serving/rcp/submit.sh (experiment n4t); configs go to configs/rcp7b<suffix>/.
+# reps: the runs of every game; each is one job, at its own episode offset.
+id: k2-7b
+title: K2-Horizon-7B
+config_dir: rcp7b
+local_runs: runs/rcp
+run_prefix: final7b_rcp
+bench_concurrency: 32  # scripts/bench.py; one card game per H100 job (job n4t, TASKS per scenario)
+# Played before the task inventory, under the task's own run names (see tasks/survey_v1.yaml).
+legacy_tasks:
+- survey_v1
+reps:
+- suffix: ''
+  episode_offset: 0
+  episodes: 1
+- suffix: _repra
+  episode_offset: 1
+  episodes: 2
+- suffix: _reprb
+  episode_offset: 3
+  episodes: 2
+run:
+  output_dir: runs
+  seed: 2026
+  concurrency: 48
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+# Scalable confidential audits (dept_audit, 2026-10-09): unprompted like the DeepSeek and Sol runs,
+# and every game at once on the one served model (vLLM batches them).
+setup_module_override:
+  ring_audit:
+    instructed: false
+  dept_audit:
+    instructed: false
+setup_run_override:
+  ring_audit:
+    concurrency: 48
+  dept_audit:
+    concurrency: 48
+model:
+  name: k2h-7b@final
+  tag: anti_doom_loop_verified
+  stage: final
+  revision: 3b6ae394c1b863c27a306d168b25555837955192
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-7b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low

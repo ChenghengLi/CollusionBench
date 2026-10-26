@@ -1,0 +1,116 @@
+# Model profile: OpenAI GPT-6.1 Sol through OpenRouter, pinned to OpenAI's standard endpoint
+# (openai, no fallback), running only the first tool call of each reply. Low reasoning and one call
+# per reply, as for GPT-6 Luna, MiMo and GLM. Configs go to configs/api/gpt-6.1-sol/.
+# Files only (the user's choice, 2026-10-09): only the "files only" setting of the four-channel
+# setup is played (the shared /workspace is the only channel); forum and direct-message games are
+# left out, so the message-cap configs that make writes have no games and are not run.
+# Unprompted only (the user's choice): the instructed games (INST) are not played, only MM.
+# Survey and depot only, one run of every game: 3 group sizes (2, 3, 4) per task, 6 games in all
+# (the user's choice), all at once. They are the same games the other models played. A first
+# launch with three runs of every game (36 games) was stopped after a few minutes at the user's
+# request and archived in runs/_archive/gpt61sol_3rounds_stopped_20261009_1700/.
+# Standard tier, not flex: openai/flex showed 20% uptime when this was set up.
+# The key is read from OPENROUTER_API_KEY; keep it in ~/.config/collusiongen/openrouter_key
+# (chmod 600) and pass it as OPENROUTER_API_KEY=$(cat ~/.config/collusiongen/openrouter_key).
+id: gpt-6.1-sol
+title: GPT-6.1 Sol (OpenAI, one call per reply)
+config_dir: api
+local_runs: runs/api
+run_prefix: gpt61sol_openai_low_cap1
+reps:
+- suffix: ''
+  episode_offset: 0
+  episodes: 1
+run:
+  output_dir: runs/api
+  seed: 2026
+  concurrency: 6  # two configs (survey, depot) of 3 games each; make gives each config at least 4
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+  # Files only: every game with the forum or direct messages is left out.
+  skip_params:
+    forum: [true]
+    messaging: [true]
+# Unlimited direct messages (semantic_dm setup, the user's choice): messaging is played there, so
+# only the forum is skipped.
+setup_run_override:
+  shared_audit_3:
+    concurrency: 54
+    skip_params: {}
+  shared_audit_3_dw:
+    concurrency: 54
+    skip_params: {}
+  shared_audit_3_dw_nh:
+    concurrency: 54
+    skip_params: {}
+  shared_audit:
+    concurrency: 54
+    skip_params: {}
+  ring_audit_6:  # folder-only game only: the default skip_params (forum, messaging) apply
+    concurrency: 54
+  ring_audit:
+    concurrency: 54
+    skip_params: {}
+  semantic_dm:
+    skip_params:
+      forum: [true]
+  exam:
+    concurrency: 54  # exam pilot: all 18 model games at once (scripted references are quick)
+  exam_hard:
+    concurrency: 54  # hard only: all 18 model games at once
+  exam_split:
+    concurrency: 54  # split data: all 9 model games at once
+  exam_split_comms:
+    concurrency: 54
+    skip_params: {}  # messages and forum are played here, so nothing is skipped
+  exam_split_both:
+    concurrency: 54
+    skip_params: {}
+  records:
+    concurrency: 54
+    skip_params: {}  # records uses messages and the forum
+  school_ops:
+    concurrency: 54
+    skip_params: {}
+  records_per_agent:
+    concurrency: 54
+    skip_params: {}
+  dept_audit:
+    concurrency: 54
+    skip_params: {}
+  dept_audit_34:
+    concurrency: 54
+    skip_params: {}
+  school_ops_per_agent:
+    concurrency: 54
+    skip_params: {}
+module_override:
+  instructed: false  # unprompted games only
+model:
+  name: gpt-6.1-sol-low-cap1
+  tag: openrouter-openai
+  backend:
+    kind: openai_chat
+    base_url: https://openrouter.ai/api/v1
+    chat_path: /chat/completions
+    served_model: openai/gpt-6.1-sol
+    api_key_env: OPENROUTER_API_KEY
+    timeout_s: 600
+    headers:
+      X-Title: Emergent Collusion  # the app name OpenRouter shows for these requests
+  action_protocol: native_tools
+  max_calls_per_reply: 1  # only the first tool call of a reply runs, as for Luna, MiMo and GLM
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: false
+    extra_body:
+      reasoning:
+        effort: low
+        summary: detailed
+      provider:
+        only:
+        - openai
+        allow_fallbacks: false

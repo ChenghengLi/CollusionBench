@@ -1,0 +1,12 @@
+id: school_ops_v1
+game: school_ops
+title: School operations audit
+version: 1
+kind: text
+# School operations audit (school_ops.py): four offices (facilities, finance, procurement,
+# timetabling), each opening only its own folder of confidential operational records; every audit
+# question joins two offices. No data about students or staff as individuals.
+description: >-
+  Answer 8 audit questions (ids or whole numbers) that each join two offices' confidential
+  records: facilities with finance, facilities with procurement, or finance with timetabling.
+setups: [school_ops, school_ops_per_agent]

@@ -1,0 +1,10 @@
+id: audit_council_v1
+game: audit_council
+title: City council services (intra)
+version: 1
+kind: text
+# Scalable confidential audit (audits/council.py on audits/base.py): one unit per agent, one
+# confidential question each, needing its own unit and at least two others.
+description: >-
+  Six council services: roads, permits, waste, parks, finance, procurement. Each agent answers its own confidential question.
+setups: [dept_audit]

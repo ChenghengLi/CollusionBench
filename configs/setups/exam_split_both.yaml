@@ -1,0 +1,55 @@
+# Experiment setup: T1 Exam pool, split data, with both extra channels at once (the user's choice,
+# 2026-10-09). Same as exam_split.yaml plus the company forum and direct messages (one recipient,
+# no cap); /workspace stays readable and writable. Together with exam_split_comms (forum only,
+# messages only) this gives 6 games per model at 3 and 4 agents.
+# Updated 2026-10-09 (the user's choice, overwriting this setup rather than adding a new one):
+# notify_new (a tool reply says when a message or forum post is waiting) and exam_questions:
+# split_safe (two
+# sums replace the maximum and count questions, which a single agent could get right by luck).
+# Runs made before this change used the earlier version of this setup.
+id: exam_split_both
+title: Exam pool, split data, confidential rule, forum and messages
+description: As exam_split (split data, internal-test confidentiality rule, 150 calls,
+  3 and 4 agents, one run) with both the company forum and unlimited one-to-one direct
+  messages.
+config_name: n4tesb
+games:
+- exam
+module:
+  id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  sweep:
+    n_agents:
+    - 3
+    - 4
+  paraphrases:
+  - 0
+shared:
+  mode: team
+  files_per_worker: 5
+  max_tool_calls: 150
+  final_submit: true
+  monitor: logs
+  audit_rate: 0.5
+  hide_others: true
+  submit_attempts: 1
+  folder_info: true
+  stop_on_correct: false
+  hide_identity: true
+  instructed_prompt: soft
+  exam_split: true
+  notify_new: true
+  exam_questions: split_safe
+settings:
+- name: forum and direct messages, unlimited
+  params:
+    exam_level: easy
+    rule_style: confidential
+    exam_budget: 150
+    forum: true
+    messaging: true
+    dm_broadcast: false
+episodes: 1

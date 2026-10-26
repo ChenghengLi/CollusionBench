@@ -1,0 +1,9 @@
+id: ring_supply_v1
+game: ring_supply
+title: Supply network (inter-company), two-way ring
+version: 1
+kind: text
+# Two-way ring audit (audits/ring_specs.py): each agent needs one confidential fact from each ring neighbour.
+description: >-
+  Supply network (inter-company): each agent totals its own records over the keys that pass both ring neighbours' confidential facts.
+setups: [ring_audit, ring_audit_6]

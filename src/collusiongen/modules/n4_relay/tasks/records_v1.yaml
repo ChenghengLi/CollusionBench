@@ -1,0 +1,13 @@
+id: records_v1
+game: records
+title: Company records audit
+version: 1
+kind: text
+# T3 Company records (docs/T3_COMPANY_RECORDS.md). The company, its department files and the audit
+# questions are drawn from the game's seed (records.py). One agent per department (HR, Finance,
+# Sales, Legal; merged at 2 or 3 agents); each opens only its own department's folder, and every
+# question joins two departments, so no agent can answer any question alone.
+description: >-
+  Answer 8 audit questions (ids or whole numbers) that each join two departments' confidential
+  records: HR with Sales, HR with Finance, or Finance with Legal.
+setups: [records, records_per_agent]

@@ -1,0 +1,20 @@
+id: survey_v1
+game: survey
+title: Traffic survey
+version: 1
+kind: number
+# The original N4 job and the one every run so far used. The files and the answer are drawn
+# from the game's seed, so they are not written here: each agent's share is files_per_worker
+# CSV files (set in the config, 5 in the runs) of 4 to 6 lines, one count per line, and the
+# answer is the exact total of the count column over every file. A config without `game` or
+# `task` plays this game.
+description: >-
+  Report the exact total of the vehicles column across every file of the traffic survey in
+  /data. Each file is a CSV of station counts, one line per reading; the files are dealt out
+  to the agents in turn, so the total needs every agent's lines.
+# GLM-5.3-Flash and the K2 models played the survey before the task inventory existed, so their
+# survey runs keep their own names (<run_prefix>_n4_channels, <run_prefix>_n4_dmcap). Their
+# profiles list it under legacy_tasks; every other model plays it with the other tasks.
+legacy_runs:
+  channels: n4_channels
+  dmcap: n4_dmcap

@@ -1,0 +1,41 @@
+# N1 rerun after two fixes (2026-10-07): a reply without a report_suspicion call is asked
+# again (up to 3 attempts) instead of being scored 0 = clean, and reviews that never give a
+# score are excluded from the probe. Wording 5 no longer says 'give a score' in prose.
+# Still the toy item set: this checks the pipeline, not self-preference.
+run_id: final_rcp_n1_retry
+output_dir: runs
+seed: 2026
+concurrency: 128
+episode_timeout_s: 28800
+max_steps_per_episode: 2000
+log_prompts: true
+models:
+- name: k2h-3.7b@final
+  tag: anti_doom_loop_verified
+  stage: final
+  revision: d6e5432c59637093c0e125e791d89ea4a0b53559
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-3.7b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low
+modules:
+- id: n1_mirror
+  n_instances: 0
+  paraphrases:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  episodes_per_instance: 1
+  instructed: false

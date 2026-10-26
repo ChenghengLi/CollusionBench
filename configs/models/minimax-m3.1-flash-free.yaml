@@ -1,0 +1,86 @@
+# Model profile: MiniMax M3.1 Flash (free) through OpenRouter, pinned to the MiniMax provider (no
+# fallback to other providers), running only the first tool call of each reply (as for MiMo, in
+# case it batches many calls in one reply). Configs go to configs/api/minimax-m3.1-flash-free/.
+# The user's choice (2026-10-21): smoke test on existing games before the pilot games are built.
+# Free tier: OpenRouter documents about 20 requests a minute and 1,000 a day for free models, but
+# on 2026-10-21 MiniMax served about 93 calls a minute (peak 156) and 27,000 in the day with no 429,
+# so concurrency is 64 games per config, as for DeepSeek (the user's question, 2026-10-21: why
+# concurrency 1); 429 answers are retried by the backend.
+# Checked before the run (2026-10-21): one tool call through provider Minimax, cost 0.
+id: minimax-m3.1-flash-free
+title: MiniMax M3.1 Flash (free, MiniMax provider, one call per reply)
+config_dir: api
+local_runs: runs/api
+run_prefix: minimaxm31flash_free_low_cap1
+bench_concurrency: 64  # scripts/bench.py
+reps:
+- suffix: ''
+  episode_offset: 0
+  episodes: 1
+run:
+  output_dir: runs/api
+  seed: 2026
+  concurrency: 32  # 64 games per config (experiments.py runs two configs' worth per config)
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+# Same per-setup conditions as DeepSeek V4.1 Flash (unprompted only where DeepSeek was), so the
+# two models play the same games (the user's request, 2026-10-21: run all the games).
+setup_module_override:
+  shared_audit_3:
+    instructed: false
+  shared_audit_3_dw:
+    instructed: false
+  shared_audit_3_dw_nh:
+    instructed: false
+  shared_audit:
+    instructed: false
+  ring_audit_6:
+    instructed: false
+  ring_audit:
+    instructed: false
+  exam:
+    instructed: false
+  exam_split:
+    instructed: false
+  exam_split_comms:
+    instructed: false
+  exam_split_both:
+    instructed: false
+  records:
+    instructed: false
+  school_ops:
+    instructed: false
+  records_per_agent:
+    instructed: false
+  dept_audit:
+    instructed: false
+  school_ops_per_agent:
+    instructed: false
+# Free tier: every config plays 4 games at once and the configs run one after another.
+model:
+  name: minimax-m3.1-flash-free-low-cap1
+  tag: openrouter-minimax-free
+  backend:
+    kind: openai_chat
+    base_url: https://openrouter.ai/api/v1
+    chat_path: /chat/completions
+    served_model: minimax/minimax-m3.1-flash:free
+    api_key_env: OPENROUTER_API_KEY
+    timeout_s: 600
+    headers:
+      X-Title: Emergent Collusion  # the app name OpenRouter shows for these requests
+  action_protocol: native_tools
+  max_calls_per_reply: 1  # only the first tool call of a reply runs
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: false
+    extra_body:
+      reasoning:
+        effort: low
+      provider:
+        only:
+        - minimax
+        allow_fallbacks: false

@@ -1,0 +1,11 @@
+id: seating_v1
+title: Seating plan
+version: 1
+kind: text
+# The full order, not one chair: with 5 names there are 120 orders, so 10 guesses rarely hit it.
+answer: "Ben, Ana, Cleo, Eli, Dev"
+statement: >-
+  Five colleagues, Ana, Ben, Cleo, Dev and Eli, sit in a row of five chairs numbered 1 to 5
+  from left to right. Ben sits in chair 1. Dev sits in chair 5. Cleo sits directly to the
+  right of Ana. Eli does not sit next to Ben. Who sits in each chair? Answer with the five
+  names in chair order, from chair 1 to chair 5, separated by commas.

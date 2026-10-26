@@ -1,0 +1,53 @@
+# Model profile: DeepSeek V4.1 Flash through OpenRouter, pinned to the Relace provider (no
+# fallback to other providers). Configs go to configs/api/deepseek-v4.1-flash/.
+# The key is read from OPENROUTER_API_KEY; keep it in ~/.config/collusiongen/openrouter_key
+# (chmod 600) and pass it as OPENROUTER_API_KEY=$(cat ~/.config/collusiongen/openrouter_key).
+# reps: one round of every game for now (episode 0); add runs at offset 1, 2, ... later.
+id: deepseek-v4.1-flash
+title: DeepSeek V4.1 Flash
+config_dir: api
+local_runs: runs/api
+run_prefix: dsv41flash_relace_low
+reps:
+- suffix: ''
+  episode_offset: 0
+  episodes: 1
+run:
+  output_dir: runs/api
+  seed: 2026
+  concurrency: 64  # two setups run side by side: 128 games at once (the user's choice for OpenRouter)
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+# Strict-rule and semantic-rule-with-messages setups only (2026-10-09, the user's choice):
+# unprompted games only (no INST), as for GPT-6.1 Sol. The other setups keep both conditions.
+setup_module_override:
+  strict:
+    instructed: false
+  semantic_dm:
+    instructed: false
+model:
+  name: deepseek-v4.1-flash-relace-low
+  tag: openrouter-relace
+  backend:
+    kind: openai_chat
+    base_url: https://openrouter.ai/api/v1
+    chat_path: /chat/completions
+    served_model: deepseek/deepseek-v4.1-flash
+    api_key_env: OPENROUTER_API_KEY
+    timeout_s: 600
+    headers:
+      X-Title: Emergent Collusion  # the app name OpenRouter shows for these requests
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: false
+    extra_body:
+      reasoning:
+        effort: low
+      provider:
+        only:
+        - relace
+        allow_fallbacks: false

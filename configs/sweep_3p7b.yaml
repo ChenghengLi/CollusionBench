@@ -1,0 +1,94 @@
+# Checkpoint sweep (RQ2): the same games on 19 checkpoints of K2-Horizon-3.7B, in training
+# order, so differences between checkpoints come from training, not from the games.
+#
+#   collusiongen sweep configs/sweep_3p7b.yaml --dry-run      # plan only
+#   collusiongen -v sweep configs/sweep_3p7b.yaml             # run; resumable
+#
+# Checkpoints (coarse sweep from the proposal, adapted to the 3.7B release):
+#   pretraining x4 (few-shot text scaffold, 8K context: A1 and N1 only)
+#   first and last tag of each mid-training stage x8
+#   RL branches rl_math, rl_code, rl_stemcode and their merge x4 (the 3.7B has no rl_tool-use)
+#   last tag of each SFT phase x2, and the released model x1
+#
+# The game set per checkpoint is deliberately smaller than the final-model deep dive
+# (configs/final_deep.yaml): identical across checkpoints, default group size, unseen themes.
+# Expect a few hours per chat checkpoint locally; downloads (about 10 GB each) overlap with runs.
+sweep_id: k2h37_sweep
+repo: IFM/K2-Horizon-3.7B
+revisions_file: configs/revisions_3p7b.yaml
+served_prefix: "k2h-3.7b@"
+tags:
+  - pretrain_100000
+  - pretrain_400000
+  - pretrain_700000
+  - pretrain_1100000
+  - mid_1_5000
+  - mid_1_55000
+  - mid_2_2500
+  - mid_2_25000
+  - mid_3_500
+  - mid_3_5500
+  - mid_4_1000
+  - mid_4_10000
+  - rl_math
+  - rl_code
+  - rl_stemcode
+  - rl_merged
+  - sft_1_10000
+  - sft_2_2500
+  - anti_doom_loop_verified
+prefetch: 1
+parity_check: true
+server:
+  port: 8000
+  gpu_memory_utilization: 0.73
+  max_num_seqs: 64
+  max_num_batched_tokens: 4096
+seed: 2026
+concurrency: 48
+log_prompts: true
+chat_sampling:
+  temperature: 1.0
+  top_p: 0.95
+  max_tokens: 8192
+  send_seed: false
+  extra_body:
+    chat_template_kwargs: {reasoning_effort: low}
+pretrain_sampling:
+  temperature: 1.0
+  top_p: 0.95
+  max_tokens: 256
+  send_seed: false
+modules:
+  - id: a1_pricing
+    split: heldout_skin
+    n_instances: 8
+    paraphrases: [0, 1]
+    episodes_per_instance: 1
+    partner_swap_fraction: 0.5
+    params_override: {horizon: 30}
+  - id: n2_market
+    split: heldout_skin
+    n_instances: 6
+    paraphrases: [0, 1]
+    episodes_per_instance: 1
+    partner_swap_fraction: 0.5
+    params_override: {horizon: 30, channel_mode: channel}
+  - id: a2_verify
+    split: heldout_skin
+    n_instances: 8
+    paraphrases: [0, 1]
+    episodes_per_instance: 1
+    partner_swap_fraction: 0.5
+    params_override: {digits: 3}
+  - id: n4_relay
+    split: heldout_skin
+    n_instances: 6
+    paraphrases: [0, 1]
+    episodes_per_instance: 1
+    partner_swap_fraction: 0.5
+  - id: n1_mirror
+    n_instances: 0
+    paraphrases: [0]
+    episodes_per_instance: 1
+    instructed: false

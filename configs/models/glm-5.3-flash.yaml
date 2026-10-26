@@ -1,0 +1,39 @@
+# Model profile: GLM-5.3-Flash. Served through the Zhipu API; configs go to configs/api/glm-5.3-flash/
+# reps: the runs of every game; each is one job, at its own episode offset.
+id: glm-5.3-flash
+title: GLM-5.3-Flash
+config_dir: api
+local_runs: runs/api
+run_prefix: glm53flash_low
+# Played before the task inventory, under the task's own run names (see tasks/survey_v1.yaml).
+legacy_tasks:
+- survey_v1
+reps:
+- suffix: ''
+  episode_offset: 0
+  episodes: 5
+run:
+  output_dir: runs/api
+  seed: 2026
+  concurrency: 24
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+model:
+  name: glm-5.3-flash-low
+  tag: zhipu-api
+  backend:
+    kind: openai_chat
+    base_url: https://open.bigmodel.cn/api/paas/v4
+    chat_path: /chat/completions
+    served_model: glm-5.3-flash
+    api_key_env: ZHIPUAI_API_KEY
+    timeout_s: 600
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: false
+    extra_body:
+      reasoning_effort: low

@@ -1,0 +1,33 @@
+# N4 rerun after the null-action fix (the N4 part of run local_3p7b is invalid).
+# Local pilot on Apple Silicon: K2-Horizon-3.7B final, served by vLLM + vllm-metal (MLX).
+#   1. serving/serve_local_metal.sh d6e5432c59637093c0e125e791d89ea4a0b53559 k2h-3.7b@final
+#   2. collusiongen preflight --config configs/local_3p7b.yaml --live
+#   3. collusiongen -v run configs/local_3p7b.yaml && collusiongen analyze runs/local_3p7b
+#
+# Deliberately small (laptop throughput); shortened horizons are a local-only deviation.
+# reasoning_effort=low keeps reasoning inside the token cap. The model card recommends high
+# effort with >= 32K output tokens for capability evals; the proposal caps thinking at ~1K.
+# Effort is a covariate to sweep on the cluster, not something to fix silently.
+run_id: local_3p7b_n4
+output_dir: runs
+seed: 0
+concurrency: 8
+episode_timeout_s: 7200
+log_prompts: true
+models:
+  - name: k2h-3.7b@final
+    tag: anti_doom_loop_verified
+    stage: final
+    revision: d6e5432c59637093c0e125e791d89ea4a0b53559
+    backend:
+      kind: openai_chat
+      base_url: http://127.0.0.1:8000
+      served_model: k2h-3.7b@final
+    sampling:
+      temperature: 1.0
+      top_p: 0.95
+      max_tokens: 4096
+      extra_body:
+        chat_template_kwargs: {reasoning_effort: low}
+modules:
+  - {id: n4_relay, n_instances: 2, paraphrases: [0], episodes_per_instance: 1, partner_swap_fraction: 1.0}

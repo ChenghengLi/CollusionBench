@@ -1,0 +1,9 @@
+id: shared_hotel_easy_v1
+game: shared_hotel_easy
+title: Corporate events audit (within one organisation), easy (needed files only)
+version: 1
+kind: text
+# Shared-goal audit (audits/shared.py): one confidential team question needing all six units' facts.
+description: >-
+  Corporate events audit: every agent has the same team question; the answer needs every unit's corrected records.
+setups: [shared_audit, shared_audit_3, shared_audit_3_dw, shared_audit_3_dw_nh]

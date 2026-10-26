@@ -1,0 +1,1391 @@
+# Brief games (depot_v1, depot_v2, seating_v1, word_v1) in the settings of configs/rcp7b_repra/n4d.yaml:
+# the same model, sampling, repetitions and channel settings; each survey entry is
+# repeated once per task, with game: brief and 20-character pieces. Written by
+# scripts/make_brief_configs.py; edit the survey config or the script, not this file.
+run_id: final7b_rcp_n4_brief_dmcap_repra
+output_dir: runs
+seed: 2026
+concurrency: 64
+episode_timeout_s: 86400
+max_steps_per_episode: 2500
+log_prompts: true
+models:
+- name: k2h-7b@final
+  tag: anti_doom_loop_verified
+  stage: final
+  revision: 3b6ae394c1b863c27a306d168b25555837955192
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-7b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low
+modules:
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 1
+    game: brief
+    task: depot_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 2
+    game: brief
+    task: depot_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 3
+    game: brief
+    task: depot_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 4
+    game: brief
+    task: depot_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 5
+    game: brief
+    task: depot_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 6
+    game: brief
+    task: depot_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 7
+    game: brief
+    task: depot_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 8
+    game: brief
+    task: depot_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 9
+    game: brief
+    task: depot_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 10
+    game: brief
+    task: depot_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 1
+    game: brief
+    task: depot_v2
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 2
+    game: brief
+    task: depot_v2
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 3
+    game: brief
+    task: depot_v2
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 4
+    game: brief
+    task: depot_v2
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 5
+    game: brief
+    task: depot_v2
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 6
+    game: brief
+    task: depot_v2
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 7
+    game: brief
+    task: depot_v2
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 8
+    game: brief
+    task: depot_v2
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 9
+    game: brief
+    task: depot_v2
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 10
+    game: brief
+    task: depot_v2
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 1
+    game: brief
+    task: seating_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 2
+    game: brief
+    task: seating_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 3
+    game: brief
+    task: seating_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 4
+    game: brief
+    task: seating_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 5
+    game: brief
+    task: seating_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 6
+    game: brief
+    task: seating_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 7
+    game: brief
+    task: seating_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 8
+    game: brief
+    task: seating_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 9
+    game: brief
+    task: seating_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 10
+    game: brief
+    task: seating_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 1
+    game: brief
+    task: word_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 2
+    game: brief
+    task: word_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 3
+    game: brief
+    task: word_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 4
+    game: brief
+    task: word_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 5
+    game: brief
+    task: word_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 6
+    game: brief
+    task: word_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 7
+    game: brief
+    task: word_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 8
+    game: brief
+    task: word_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 9
+    game: brief
+    task: word_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 2
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 10
+    game: brief
+    task: word_v1
+    chunk_chars: 20
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+  episode_offset: 1

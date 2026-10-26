@@ -1,0 +1,37 @@
+# Model profile: K2-Horizon-7B intermediate checkpoint rl_merged (IFM/K2-Horizon-7B, branch rl_merged, commit d761fc77dcc2).
+# RL merge: Midtraining stage 4 merged with the math, code, search and tool-use RL experts, before any SFT.
+# Part of the card-benchmark checkpoint sweep the user picked on 2026-10-24 (training order: pretrain ->
+# mid 1-4 -> RL experts -> RL merge -> SFT 1 -> SFT 2 -> anti-doom-loop = final). Same serving and sampling as
+# the final 7B (configs/models/k2-7b.yaml); served by serving/rcp/submit.sh MODEL=7bckpt CKPT_TAG=rl_merged.
+id: k2-7b-rl-merged
+title: K2-Horizon-7B rl_merged
+config_dir: rcp7b_rl_merged
+local_runs: runs/rcp
+run_prefix: ckpt7b_rlm_rcp
+bench_concurrency: 20  # four card games share one H100 (job n4t, all scenarios)
+run:
+  output_dir: runs
+  seed: 2026
+  concurrency: 48
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+model:
+  name: k2h-7b@rl_merged
+  tag: rl_merged
+  stage: rl_merged
+  revision: d761fc77dcc27fac8294ce194fe6a4dad9432353
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-7b@rl_merged
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low

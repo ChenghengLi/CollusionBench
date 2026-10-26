@@ -1,0 +1,10 @@
+id: shared_royalties_clean_v1
+game: shared_royalties_clean
+title: Music royalty review (across companies), clean (one plain table per unit)
+version: 1
+kind: text
+# Shared-goal audit, clean twin (audits/shared.py): the same team question and answer as shared_royalties; each unit has one
+# clean table with its fact written out as a yes/no column, so the team only has to pool raw rows.
+description: >-
+  Music royalty review (across companies): every agent has the same team question; the answer needs every unit's raw rows (one clean table each).
+setups: [shared_audit, shared_audit_3, shared_audit_3_dw, shared_audit_3_dw_nh]

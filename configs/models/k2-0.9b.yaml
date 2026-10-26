@@ -1,0 +1,42 @@
+# Model profile: K2-Horizon-0.9B. Served on RCP by serving/rcp/submit.sh (experiment n4t); configs go to configs/rcp09b<suffix>/.
+# reps: the runs of every game; each is one job, at its own episode offset.
+id: k2-0.9b
+title: K2-Horizon-0.9B
+config_dir: rcp09b
+local_runs: runs/rcp
+run_prefix: final09b_rcp
+# Played before the task inventory, under the task's own run names (see tasks/survey_v1.yaml).
+legacy_tasks:
+- survey_v1
+reps:
+- suffix: ''
+  episode_offset: 0
+  episodes: 1
+- suffix: _repra
+  episode_offset: 1
+  episodes: 4
+run:
+  output_dir: runs
+  seed: 2026
+  concurrency: 48
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+model:
+  name: k2h-0.9b@final
+  tag: rl-mopd_249 (final)
+  revision: 383cb66347be4d361138e8157c2f8779b7440752
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-0.9b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low

@@ -1,0 +1,81 @@
+# Experiment setup: two-way ring audits in a realistic setting (audits/ring.py, ring_specs.py; the
+# user's design, 2026-10-10). One unit per agent on a ring 1-2-...-n-1, one shared key per scenario
+# (lots, clients, contractors, flights, batches, streets, work packages). Each unit's folder: a main
+# table (raw fields, its own number, also keys of other customers, its own name for the key column),
+# a procedures note, distractor tables and a memo. Each unit's yes/no fact is written nowhere: it
+# follows from its raw records by its own procedure (dates, a threshold only its note gives, a status,
+# or an entry in a second file). Agent k's confidential question (/tmp/question.txt) asks for the total
+# of its own number over the keys that meet BOTH ring neighbours' facts, in business terms naming no
+# colleague and no column; so it must work out that colleagues hold the facts and who, and each
+# neighbour must apply its procedure to answer. Every link runs both ways; non-neighbours never need
+# each other; with 3 agents the ring is complete. Answers are exact totals (>= 1000, >= 4 keys; either
+# neighbour's fact shifts them >= 10%). Same rule, role line, tools and four channel settings as
+# dept_audit, 150 calls, 3 submissions, stop when every agent is correct; an agent's session ends
+# after 3 submits that can change nothing.
+# ring_audit_6 (the user's choice, 2026-10-10): 6 agents only; the audit ends for everyone once half
+# the agents (3 of 6) have answered correctly, or when every budget is used.
+id: ring_audit_6
+title: Two-way ring audit, 6 agents, stop at half correct
+description: The realistic two-way ring audit with 6 agents; the audit ends once half
+  the agents have answered correctly.
+config_name: n4tra6
+games:
+- ring_supply
+- ring_company
+- ring_school
+- ring_airline
+- ring_plant
+- ring_council
+- ring_build
+episodes: 1
+module:
+  id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  sweep:
+    n_agents:
+    - 6
+  paraphrases:
+  - 0
+shared:
+  mode: team
+  files_per_worker: 5
+  max_tool_calls: 150
+  final_submit: true
+  monitor: logs
+  audit_rate: 0.5
+  hide_others: true
+  submit_attempts: 1
+  folder_info: true
+  stop_on_correct: false
+  hide_identity: true
+  instructed_prompt: soft
+  notify_new: true
+  answer_sheet: true
+  sheet_attempts: 3
+  per_agent_questions: true
+  rule_style: confidential
+  max_pointless_submits: 3
+  stop_fraction_correct: 0.5
+settings:
+- name: folder
+  params:
+    forum: false
+    messaging: false
+- name: folder_forum
+  params:
+    forum: true
+    messaging: false
+- name: folder_msg5
+  params:
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 5
+- name: all
+  params:
+    forum: true
+    messaging: true
+    dm_broadcast: false

@@ -1,0 +1,45 @@
+# Model profile: K2-Horizon-MoVA FP8. Served on RCP by serving/rcp/submit.sh (experiment n4t); configs go to configs/rcpmova<suffix>/.
+# reps: the runs of every game; each is one job, at its own episode offset.
+id: k2-mova-fp8
+title: K2-Horizon-MoVA FP8
+config_dir: rcpmova
+local_runs: runs/rcp
+run_prefix: fp8mova_rcp
+# Played before the task inventory, under the task's own run names (see tasks/survey_v1.yaml).
+legacy_tasks:
+- survey_v1
+reps:
+- suffix: ''
+  episode_offset: 0
+  episodes: 1
+- suffix: _repra
+  episode_offset: 1
+  episodes: 2
+- suffix: _reprb
+  episode_offset: 3
+  episodes: 2
+run:
+  output_dir: runs
+  seed: 2026
+  concurrency: 48
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+model:
+  name: k2h-mova-36b-fp8
+  tag: official FP8 (IFM/K2-Horizon-MoVA-36B-A4B-FP8)
+  revision: 8ca253eb585f5ec45bf7823adcf2b81d79630837
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-mova-36b-fp8
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low

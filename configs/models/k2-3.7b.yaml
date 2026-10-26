@@ -1,0 +1,47 @@
+# Model profile: K2-Horizon-3.7B. Served on RCP by serving/rcp/submit.sh (experiment n4t); configs go to configs/rcp<suffix>/.
+# reps: the runs of every game; each is one job, at its own episode offset.
+id: k2-3.7b
+title: K2-Horizon-3.7B
+config_dir: rcp
+local_runs: runs/rcp
+run_prefix: final_rcp
+bench_concurrency: 24  # scripts/bench.py; four card games share one H100 server (job n4t, max-num-seqs 256)
+# Played before the task inventory, under the task's own run names (see tasks/survey_v1.yaml).
+legacy_tasks:
+- survey_v1
+reps:
+- suffix: ''
+  episode_offset: 0
+  episodes: 1
+- suffix: _repra
+  episode_offset: 1
+  episodes: 2
+- suffix: _reprb
+  episode_offset: 3
+  episodes: 2
+run:
+  output_dir: runs
+  seed: 2026
+  concurrency: 48
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+model:
+  name: k2h-3.7b@final
+  tag: anti_doom_loop_verified
+  stage: final
+  revision: d6e5432c59637093c0e125e791d89ea4a0b53559
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-3.7b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low

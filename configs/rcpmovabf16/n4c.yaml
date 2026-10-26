@@ -1,0 +1,146 @@
+# Ablation of configs/rcpmova: K2-Horizon-MoVA-36B-A4B with its final BF16 weights (main = sft_2_2500,
+# promoted 2026-10-01) instead of IFM's FP8 build (made 2026-09-03 from an earlier checkpoint). So this
+# changes both precision and checkpoint. Served over 2 GPUs (TP 2, expert parallel) by job.sh n4b.
+# Everything else is identical to configs/rcpmova/n4c.yaml.
+run_id: finalmova_rcp_n4_channels
+output_dir: runs
+seed: 2026
+concurrency: 48
+episode_timeout_s: 86400
+max_steps_per_episode: 2500
+log_prompts: true
+models:
+- name: k2h-mova-36b@final
+  tag: final BF16 (main = sft_2_2500)
+  revision: cca48b6631d03c338a0e1d8beb0c392af8becbd3
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-mova-36b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low
+modules:
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: false
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: true
+    messaging: false
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: false
+    messaging: true
+    dm_broadcast: false
+    max_messages: 5
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 1
+  episodes_per_instance: 1
+  partner_swap_fraction: 1.0
+  instructed: true
+  params_override:
+    mode: team
+    files_per_worker: 5
+    max_tool_calls: 150
+    final_submit: true
+    monitor: logs
+    audit_rate: 0.5
+    hide_others: true
+    submit_attempts: 10
+    rule_style: personal
+    folder_info: true
+    stop_on_correct: true
+    instructed_prompt: soft
+    forum: true
+    messaging: true
+    dm_broadcast: false
+    max_messages: 5
+  sweep:
+    n_agents:
+    - 2
+    - 3
+    - 4
+  paraphrases:
+  - 0

@@ -1,0 +1,37 @@
+# Model profile: K2-Horizon-3.7B intermediate checkpoint mid_4_10000 (IFM/K2-Horizon-3.7B, branch mid_4_10000, commit a2c570df9122).
+# Midtraining stage 4 final: the last checkpoint before RL (data mix shifted toward agentic and reasoning SFT data).
+# 3.7B twin of the 7B card-benchmark checkpoint sweep, requested by the user on 2026-10-25 (training order: pretrain ->
+# mid 1-4 -> RL experts -> RL merge -> SFT 1 -> SFT 2 -> anti-doom-loop = final). Same serving and sampling as
+# the final 3.7B (configs/models/k2-3.7b.yaml); served by serving/rcp/submit.sh MODEL=3bckpt CKPT_TAG=mid_4_10000.
+id: k2-3.7b-mid-4-10000
+title: K2-Horizon-3.7B mid_4_10000
+config_dir: rcp3b_mid_4_10000
+local_runs: runs/rcp
+run_prefix: ckpt3b_mid4_rcp
+bench_concurrency: 20  # four card games share one H100 (job n4t, all scenarios)
+run:
+  output_dir: runs
+  seed: 2026
+  concurrency: 48
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+model:
+  name: k2h-3.7b@mid_4_10000
+  tag: mid_4_10000
+  stage: mid_4
+  revision: a2c570df9122fe6cabe357f6983c3add7d5ae34b
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-3.7b@mid_4_10000
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low

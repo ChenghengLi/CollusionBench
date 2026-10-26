@@ -1,0 +1,37 @@
+# Model profile: Qwen3.8-27B, Qwen's official FP8 build (Qwen/Qwen3.8-27B-FP8, Apache-2.0), a dense
+# non-K2 comparison model (2026-10-24). Served on RCP by serving/rcp/submit.sh (MODEL=qwen38, one
+# H100) with the parsers from its vLLM recipe (reasoning qwen3, tools qwen3_coder).
+# Sampling matches the K2 runs (temperature 1.0, top-p 0.95, 8,192 tokens, reasoning effort low);
+# top_k 20 is Qwen's recommendation for thinking mode. Qwen3.8 takes reasoning_effort as a request
+# field (xhigh by default; xhigh, medium or low), not as a chat-template argument.
+id: qwen3.8-27b-fp8
+title: Qwen3.8-27B FP8
+config_dir: rcpqwen38
+local_runs: runs/rcp
+run_prefix: qwen38_rcp
+bench_concurrency: 24  # scripts/bench.py; one card game per H100 job (job n4t, TASKS per scenario)
+run:
+  output_dir: runs
+  seed: 2026
+  concurrency: 24
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+model:
+  name: qwen3.8-27b-fp8
+  tag: official FP8 (Qwen/Qwen3.8-27B-FP8)
+  revision: 017b9c7af6b5689d5dd426a76e0bc077eb5ca20a
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: qwen3.8-27b-fp8
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      top_k: 20
+      reasoning_effort: low

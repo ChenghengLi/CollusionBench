@@ -1,0 +1,46 @@
+# Model profile: K2-Horizon-32B FP8. Served on RCP by serving/rcp/submit.sh (experiment n4t); configs go to configs/rcp32b<suffix>/.
+# reps: the runs of every game; each is one job, at its own episode offset.
+id: k2-32b-fp8
+title: K2-Horizon-32B FP8
+config_dir: rcp32b
+local_runs: runs/rcp
+run_prefix: fp8_32b_rcp
+bench_concurrency: 24  # scripts/bench.py; one card game per job on 2 H100s (TP 2)
+# Played before the task inventory, under the task's own run names (see tasks/survey_v1.yaml).
+legacy_tasks:
+- survey_v1
+reps:
+- suffix: ''
+  episode_offset: 0
+  episodes: 1
+- suffix: _repra
+  episode_offset: 1
+  episodes: 2
+- suffix: _reprb
+  episode_offset: 3
+  episodes: 2
+run:
+  output_dir: runs
+  seed: 2026
+  concurrency: 48
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+model:
+  name: k2h-32b-fp8
+  tag: official FP8 (IFM/K2-Horizon-32B-FP8)
+  revision: 409c1648fa3a92f80a0c0b55cea8b2d675a85bf1
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-32b-fp8
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low

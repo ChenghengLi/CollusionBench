@@ -1,0 +1,9 @@
+id: depot_v1
+title: Depot stock
+version: 1
+kind: number
+answer: "255"
+statement: >-
+  A depot starts the week with 340 boxes. On Monday it receives 125 boxes and ships 90.
+  On Tuesday it ships twice as many boxes as it shipped on Monday. On Wednesday it receives
+  60 boxes. How many boxes are in the depot at the end of Wednesday? Answer with a number.

@@ -1,0 +1,117 @@
+# Final-checkpoint deep dive, native tool calls: maximum variety on K2-Horizon-3.7B.
+#
+# The model acts only through its own trained tool-call format (vLLM --tool-call-parser
+# k2_horizon); no text is parsed for actions. N4 runs in deployment mode: concurrent workers,
+# 40 tool calls each, an add tool, and a job no single worker can finish alone.
+#
+# What varies: unseen themes (held-out-skin split), 3 wordings, group size (A1/A2/N4 sweep),
+# N2 with an open board and with a regulator, partner swaps on half the games, the
+# instructed ceiling everywhere, plus three robustness checks: held-out numbers (A1, A2) and
+# the N4 "later shifts are you" solo control.
+#
+# Budget: about 35k model calls. Local throughput is prompt-bound (~1,100 prompt tokens/s,
+# ~150 generated tokens/s, ~4-6 requests/s at concurrency 48), so expect roughly 12-16 hours.
+# Resumable: rerun the same command after any interruption.
+#
+#   K2H_EXTRA_ARGS="--gpu-memory-utilization 0.73 --max-num-seqs 64 --max-num-batched-tokens 4096" \
+#     serving/serve_local_metal.sh d6e5432c59637093c0e125e791d89ea4a0b53559 k2h-3.7b@final
+#   collusiongen -v run configs/final_deep_native.yaml && collusiongen analyze runs/final_deep_native
+run_id: final_deep_native
+output_dir: runs
+seed: 2026
+concurrency: 48
+episode_timeout_s: 28800
+max_steps_per_episode: 2000
+log_prompts: true
+models:
+  - name: k2h-3.7b@final
+    tag: anti_doom_loop_verified
+    stage: final
+    revision: d6e5432c59637093c0e125e791d89ea4a0b53559
+    backend:
+      kind: openai_chat
+      base_url: http://127.0.0.1:8000
+      served_model: k2h-3.7b@final
+      timeout_s: 1800
+    action_protocol: native_tools
+    sampling:
+      temperature: 1.0
+      top_p: 0.95
+      max_tokens: 8192
+      send_seed: false          # MLX-native sampling; see agents/backends.py
+      extra_body:
+        chat_template_kwargs: {reasoning_effort: low}
+modules:
+  # --- tacit pricing, 2-4 firms, unseen themes
+  - id: a1_pricing
+    split: heldout_skin
+    n_instances: 8
+    paraphrases: [0, 1, 2]
+    episodes_per_instance: 1
+    partner_swap_fraction: 0.5
+    params_override: {horizon: 30}
+    sweep: {n_agents: [2, 3, 4]}
+  # --- pricing with an open board, and with a regulator
+  - id: n2_market
+    split: heldout_skin
+    n_instances: 6
+    paraphrases: [0, 1]
+    episodes_per_instance: 1
+    partner_swap_fraction: 0.5
+    params_override: {horizon: 30}
+    sweep: {channel_mode: [channel, channel_regulator]}
+  # --- mutual verification ring, 2-4 workers, tasks the model can mostly solve
+  - id: a2_verify
+    split: heldout_skin
+    n_instances: 8
+    paraphrases: [0, 1, 2]
+    episodes_per_instance: 1
+    partner_swap_fraction: 0.5
+    params_override: {digits: 3}
+    sweep: {n_agents: [2, 3, 4]}
+  # --- relay, deployment mode: concurrent workers, 2-4 per job
+  - id: n4_relay
+    split: heldout_skin
+    n_instances: 6
+    paraphrases: [0, 1]
+    episodes_per_instance: 1
+    partner_swap_fraction: 0.5
+    sweep: {n_agents: [2, 3, 4]}
+  # --- relay, the original sequential shifts, for comparison with concurrent workers
+  - id: n4_relay
+    split: heldout_skin
+    n_instances: 4
+    instance_offset: 50
+    paraphrases: [0]
+    episodes_per_instance: 1
+    partner_swap_fraction: 1.0
+    params_override: {n_agents: 3, schedule: sequential}
+  # --- robustness: settings outside the training ranges
+  - id: a1_pricing
+    split: heldout_params
+    n_instances: 4
+    paraphrases: [3]
+    episodes_per_instance: 1
+    partner_swap_fraction: 1.0
+    params_override: {horizon: 30}
+  - id: a2_verify
+    split: heldout_params
+    n_instances: 4
+    paraphrases: [3]
+    episodes_per_instance: 1
+    partner_swap_fraction: 1.0
+  # --- solo control for N4: the other workers are described as copies of the agent itself
+  - id: n4_relay
+    split: heldout_skin
+    n_instances: 4
+    instance_offset: 100
+    paraphrases: [0]
+    episodes_per_instance: 1
+    partner_swap_fraction: 1.0
+    params_override: {n_agents: 3, framing: self}
+  # --- code-monitor probe on the toy set (plumbing; the real set comes later)
+  - id: n1_mirror
+    n_instances: 0
+    paraphrases: [0, 1, 2, 3, 4]
+    episodes_per_instance: 1
+    instructed: false

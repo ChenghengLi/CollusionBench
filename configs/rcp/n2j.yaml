@@ -1,0 +1,56 @@
+# N2 rerun with the proposal's two-stage regulator: the keyword filter flags candidate
+# messages and Qwen3-32B (temperature 0, thinking off) decides whether a flagged message is an
+# agreement. The first RCP N2 run (configs/rcp/n2.yaml, keyword only) fined explicit denials
+# such as "no agreement is proposed", so its regulated-board results are invalid.
+# Same games, wordings, swaps and sampling as configs/rcp/n2.yaml. Needs 2 GPUs (job.sh n2j).
+run_id: final_rcp_n2_judged
+output_dir: runs
+seed: 2026
+concurrency: 128
+episode_timeout_s: 28800
+max_steps_per_episode: 2000
+log_prompts: true
+models:
+- name: k2h-3.7b@final
+  tag: anti_doom_loop_verified
+  stage: final
+  revision: d6e5432c59637093c0e125e791d89ea4a0b53559
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-3.7b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low
+modules:
+- id: n2_market
+  split: heldout_skin
+  n_instances: 6
+  paraphrases:
+  - 0
+  - 1
+  episodes_per_instance: 1
+  partner_swap_fraction: 0.5
+  params_override:
+    horizon: 30
+  sweep:
+    channel_mode:
+    - channel
+    - channel_regulator
+judge:
+  kind: two_stage
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8001
+    served_model: qwen3-32b
+    timeout_s: 600
+  extra_body:
+    chat_template_kwargs:
+      enable_thinking: false
