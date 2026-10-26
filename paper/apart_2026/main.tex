@@ -85,7 +85,7 @@
     filecolor=deepblue,
     urlcolor=deepblue,
     citecolor=deepblue,
-    pdftitle={Refuse When Asked, Collude When Blocked: Emergent Collusion in AI Agent Teams},
+    pdftitle={They Say No, Then Do It Anyway: Collusion When They Hit a Wall},
     pdfauthor={Chengheng Li Chen},
 }
 
@@ -130,7 +130,7 @@
 \hrule height 3pt
 \vskip 0.22in
 \centering
-{\LARGE\bfseries Refuse When Asked, Collude When Blocked:\\[0.3em] Emergent Collusion in AI Agent Teams\par}
+{\LARGE\bfseries They Say No, Then Do It Anyway:\\[0.3em] Collusion When They Hit a Wall\par}
 \vskip 0.2in
 \hrule height 0.8pt
 \vskip 0.25in}
@@ -151,7 +151,7 @@
 \begin{minipage}{0.84\textwidth}
 \centerline{\large\bfseries Abstract}
 \vspace{0.5em}
-AI agents now work in teams, often built on the same model. We ask what such a team does when finishing its job means breaking a rule. In our benchmark, three copies of one model each run a department of a made-up company. Each department holds records the others need, but company policy forbids passing them around, and an office tool is the only allowed way to combine them. Nobody tells the agents to share, allows it or rewards it. When a scripted colleague asks once for the records, the agents rarely hand them over. When the office tool returns only partial information, the same agents often do, and in four of the six models we test, most cases involve agents working together. We call this emergent collusion and track it through four stages, all measured from the game logs: finding colleagues, coordinating with them, breaking the rule together and hiding it. The agents almost never edit their activity logs, yet most models report success in games they failed. In one model's training history, agents rarely talk to each other before supervised fine-tuning, and joint rule-breaking grows after a short final training update.
+Imagine three AI agents, copies of one model, each running one department of a company. Their task needs records that each department keeps to itself, and company rules forbid sharing them. A shared tool should combine them within the rules. What happens when that tool breaks? Nobody tells the agents to share, allows it or rewards it. Across six open models, the agents hold firm when a colleague asks for the records: at most 4 of 30 requests were answered. Yet once the tool returns only a rough answer, the same agents break the rule in 22--72\% of games, and in four of the six models they mostly do it together, with one agent asking for or using what another hands over. We call this emergent collusion. The agents rarely edit their activity logs to cover up a leak, but their final reports are another matter: five of the six models claim success in 78--93\% of the games they fail. Training stages of one model show when this appears. Its agents barely talk until supervised fine-tuning, when a typical game jumps from one or two messages to about a hundred, and a short final update meant to stop looping replies more than doubles their rule-breaking. We hypothesise that fine-tuning teaches agents to coordinate, while training them to always deliver an answer pushes them past the rule. If small models already learn to collude in such simple settings, more capable ones could do it better and even cover it up.
 \end{minipage}
 \end{center}
 
@@ -363,55 +363,48 @@ We test six models: K2-Horizon-3.7B, K2-Horizon-7B and K2-Horizon-32B (K2-3.7B, 
 \section{Tracing the Stages Through Training}
 \label{sec:training}
 
-IFM \citep{ifm2026k2} released training \emph{checkpoints} (snapshots saved during training) of K2-7B and K2-3.7B, and we test one from the end of each training phase: the end of \emph{midtraining}, which continues pretraining; the \emph{RL merge}, where reinforcement-learning experts are merged into one model; and the ends of two \emph{supervised fine-tuning} (SFT) phases. The final release then adds a short preference update meant to stop looping replies. We replay the full benchmark on all five versions of each size (Figure~\ref{fig:pipeline}; per-version numbers in Table~\ref{tab:all}).
+IFM \citep{ifm2026k2} released training \emph{checkpoints} (snapshots saved during training) of K2-7B and K2-3.7B, and we test one from the end of each training phase: the end of \emph{midtraining}, which continues pretraining; the \emph{RL merge}, where reinforcement-learning experts are merged into one model; and the ends of two \emph{supervised fine-tuning} (SFT) phases. The final release then adds a short preference update meant to stop looping replies. We replay the full benchmark on all five versions of each size (Figure~\ref{fig:pipeline}; per-version numbers in Table~\ref{tab:all}). Two figures trace the evolution: Figure~\ref{fig:funnelckpt} shows how far each blocked game gets through the stages at every phase, and Figure~\ref{fig:train} follows how much the agents talk, how often they solve the task and how often they file false reports.
 
-\subsection{K2-7B: from silence to collusion}
-
-\phead{Before fine-tuning, the agents do not talk.} After midtraining and after the RL merge, agents make contact in fewer than a third of blocked games and exchange one or two messages (Figures~\ref{fig:train}a and~\ref{fig:funnelckpt}). The RL-merge checkpoint is the most capable K2 checkpoint (Figure~\ref{fig:train}b), so its low breach rate reflects silence, not respect for the rule: a checkpoint can look safe only because it lacks a capability.
-
-\begin{figure}[t]
+\begin{figure}[tbp]
     \centering
+    \includegraphics[width=\textwidth]{fig_funnel_ckpt.pdf}
+    \caption{\textbf{K2-7B's teams start talking at SFT and colluding by the final release; K2-3.7B's talk from the start but mostly overshare.} Furthest stage of collusion reached in each blocked data-task game at every training phase, K2-7B (left) and K2-3.7B (right).}
+    \label{fig:funnelckpt}
+    \vspace{0.9em}
     \includegraphics[width=\textwidth]{fig_train.pdf}
     \caption{\textbf{K2-7B's agents start talking at supervised fine-tuning, and false reports stay high throughout.} At each training phase: (a) median messages between agents in a blocked records game (log scale), (b) games solved, and (c) false reports as a share of failed games. The grey band marks the two SFT phases.}
     \label{fig:train}
 \end{figure}
 
-\phead{SFT gives the agents a voice.} After the first SFT phase almost every blocked game involves contact, with about a hundred messages in a typical records game (Figure~\ref{fig:train}a). Breaches more than triple, from 8 to 29 of 60 ($p < 0.0001$), and full collusion in blocked records rises from 2 to 9 of 20. Turns also become much shorter, so part of the rise may reflect a chattier style. The second SFT phase partly reverses the change.
+\subsection{K2-7B: from silence to collusion}
 
-\phead{The final update makes it collude much more.} A brief preference update meant to stop looping replies, which were already rare, raises blocked breaches from 20 to 43 of 60 ($p < 0.0001$) and more than doubles full collusion (Figure~\ref{fig:funnelckpt}).
+\phead{Before fine-tuning, the agents do not talk.} After midtraining and after the RL merge, the agents never contact each other in about three quarters of blocked data-task games (42 and 44 of 60; Figure~\ref{fig:funnelckpt}, left), and a typical records game has only one or two messages (Figure~\ref{fig:train}a). Breaches are correspondingly rare, 3 and 8 of 60, visible as the short red bars in the top rows of Figure~\ref{fig:funnelckpt}. Yet the RL-merge checkpoint solves more games than any other K2 version, 251 of 440 (the peak of the black line in Figure~\ref{fig:train}b), so its low breach rate reflects silence, not respect for the rule: a checkpoint can look safe only because it lacks a capability.
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\textwidth]{fig_funnel_ckpt.pdf}
-    \caption{\textbf{K2-7B's teams start talking at SFT and colluding by the final release; K2-3.7B's talk from the start but mostly overshare.} Furthest stage of collusion reached in each blocked data-task game at every training phase, K2-7B (left) and K2-3.7B (right).}
-    \label{fig:funnelckpt}
-\end{figure}
+\phead{SFT gives the agents a voice.} After the first SFT phase, only 3 of 60 blocked games lack contact, and the median records game jumps from 1.5 to about a hundred messages, the steep rise in Figure~\ref{fig:train}a. Breaches more than triple, from 8 to 29 of 60 ($p < 0.0001$), joint breaches rise from 5 to 20, and full collusion in blocked records grows from 2 to 9 of 20 (Table~\ref{tab:all}). Turns also become much shorter (Figure~\ref{fig:profile}), so part of the rise may reflect a chattier style. The second SFT phase partly reverses the change, with 20 breaches and fewer messages.
+
+\phead{The final update makes it collude much more.} A brief preference update meant to stop looping replies, which were already rare, raises blocked breaches from 20 to 43 of 60 ($p < 0.0001$). Almost all of them are now joint (36 of 43), the long red bar at the bottom of Figure~\ref{fig:funnelckpt} (left), and full collusion in blocked records more than doubles, from 5 to 13 of 20 (Table~\ref{tab:all}). Messages, solved games and false reports barely move at this step (Figure~\ref{fig:train}), so the update changes what the team does with its conversations while the amount of talk stays about the same.
 
 \subsection{K2-3.7B: early but careless rule-breaking}
 
-K2-3.7B follows a different path (Figure~\ref{fig:funnelckpt}, right). Its agents talk from the first checkpoint and break the rule even when the route works, about half the time without anyone asking. RL on mathematics and code makes it quieter and weaker, and SFT teaches it to use the office when the office works, so that by the second SFT phase it breaks the rule mostly when it has to. The final update then more than doubles its blocked breaches, from 16 to 37 of 60 ($p = 0.0002$), but most remain unilateral and full collusion reaches only 4 of 20 (Figure~\ref{fig:heatckpt}). Unlike K2-7B, its turns keep the same length throughout, so its rise is not a side effect of chattier replies.
+K2-3.7B follows a different path (Figure~\ref{fig:funnelckpt}, right). Its agents talk from the first checkpoint and break the rule even while the route works, in 16 of 60 moderate-route games, often by posting data that nobody asked for. The RL merge makes it quieter and weaker: games without contact rise from 19 to 31 (Figure~\ref{fig:funnelckpt}, right), messages halve (Figure~\ref{fig:train}a), and it solves the fewest games of any K2 version, 102 of 440 (Figure~\ref{fig:train}b). SFT then more than doubles its solved games, to 222 (the jump in the blue line of Figure~\ref{fig:train}b), and teaches it to use the office when the office works, so that by the second SFT phase it breaks the rule mostly when it has to (3 moderate-route breaches against 16 blocked). The final update more than doubles its blocked breaches, from 16 to 37 of 60 ($p = 0.0002$), but 20 of them are still unilateral (the pink segment of the bottom bar in Figure~\ref{fig:funnelckpt}, right), and full collusion in blocked records reaches only 4 of 20. Unlike K2-7B, its message counts and turn lengths stay roughly constant (Figures~\ref{fig:train}a and~\ref{fig:profile}), so its rise is not a side effect of a chattier style.
 
 \subsection{What stays the same, and a hypothesis}
 
-Two things barely change across training. At every checkpoint, breaches rarely produce the correct answer, and false reports stay at 72--91\% of failed games from the first checkpoint on (Figure~\ref{fig:train}c). Misreporting is therefore a base tendency that later phases neither add nor remove.
+Two things barely change across training. At every checkpoint, breaches rarely produce the correct answer (2 of 119 blocked breach games across the eight checkpoints; Table~\ref{tab:all}), and false reports stay at 72--91\% of failed games from the first checkpoint on (Figure~\ref{fig:train}c). Misreporting is therefore a base tendency that later phases neither add nor remove.
 
 Together, these observations suggest a tentative account of how emergent collusion arises. First, the ability to coordinate seems to come from conversational and agentic supervised data more than from reinforcement learning: K2-7B's RL experts include a tool-use expert, yet its agents barely talk until SFT. Second, once agents can talk, the drive to finish the assigned task outweighs the written rule. The final preference update, which teaches the model to end its replies instead of looping, may strengthen this drive to deliver an answer, which would explain why it raises rule-breaking in both sizes. Third, turning a breach into joint execution needs enough capacity to plan with a colleague, which the larger model has and the smaller one largely lacks. False reporting, present from the start, looks like a separate habit of claiming success. These are hypotheses, not findings: the checkpoints differ in data, steps and objectives at once, and we ran each one once, so the contrasts are exploratory (Table~\ref{tab:stats}) and testing the account would need controlled training runs.
 
-\section{Discussion and Limitations}
+\section{Conclusion}
 \label{sec:discussion}
 
-\claim{What we found.} Copies of one model, working as a team, follow a company rule while the approved way to finish their task works, and break it once that way fails, even though they refuse when a colleague simply asks. The stronger models carry the breach through together, the weaker ones stall at different stages, and almost every model then claims success in the games it fails. Training matters: in one model, the ability to talk to colleagues arrives with supervised fine-tuning, and a small final update makes the team collude much more. Emergent collusion therefore does not need a hidden objective or a secret channel; an ordinary goal and a blocked tool are enough.
+Agent teams that refused a colleague's request broke the same rule once the official route failed, mostly through joint execution, and most models then claimed success in games they had failed. In K2-7B, these behaviours appeared at supervised fine-tuning and grew after the short final update.
 
-\claim{Implications.} Evaluations should include a failing official route, because disabling it raised breaches far more than any request did, and a test built only on forbidden requests would rate these models as safe. Reports need checking against the system state, since teams filed false reports whether or not they had breached \citep{falsesuccess2026}. Most breaches travelled on the forum or by private message, where screening shared items for protected values catches them, although teams that knew they were being read might move to covert channels \citep{motwani2024secret, greenblatt2023control}. Because the behaviour can change sharply after a short training step, collusion is worth measuring at every checkpoint before release.
-
-\claim{Future work.} Three directions follow directly. The first is mitigation: giving agents an honest exit, such as a way to escalate a blocked task, and testing whether it removes the pressure to collude. The second is scale and motive: running the benchmark on larger and frontier models, and replacing the openly assigned goal with objectives that are learned through reward hacking or planted in training, which are the cases that motivate this work. The third is cause: controlled training runs that change one ingredient at a time would test our hypothesis about where the abilities come from, and a human check of a sample of scorer labels would strengthen the measurements.
+\claim{Implications.} These behaviours already appear in small open models with limited ability to cooperate, and more capable models are likely to show them in stronger form: in our data, the more capable models turned breaches into correct answers far more often, and the larger K2 model coordinated where the smaller one only overshared. Copies of a deployed model may share a goal without anyone intending it, because training such as reinforcement learning can give every copy the same objective. When the rules people set stand in the way of that goal, the copies may break them together and then cover it up with false reports. Safeguards therefore need to watch the team as a whole. Evaluations should include a failing official route, since a test built only on forbidden requests would rate these models as safe; reports need checking against the system state \citep{falsesuccess2026}; and because a short training step can change the behaviour sharply, collusion is worth measuring at every checkpoint before release.
 
 \label{sec:limits}
 \claim{Limitations.} Agents cannot escalate, so we measure rule-breaking when the alternative is certain failure, a starker dead end than in real workplaces. The report bonus and team goals remain, identical for every model. We played only 20 games per cell (10 for asked and instructed), so each estimate is noisy, although clear trends appear across models and checkpoints. We also lack intermediate checkpoints within each training phase, which would show in more detail how these capabilities emerge. Finally, compute limits kept us from testing frontier models.
 
-\section{Conclusion}
-
-Agent teams that refused a colleague's request broke the same rule once the official route failed, mostly through joint execution, and most models then claimed success in games they had failed. In K2-7B, these behaviours appeared at supervised fine-tuning and grew after the short final update. Disabling the route in tests and checking reports against outcomes, at every checkpoint, could catch this early.
+\claim{Future work.} The first step is to scale up, running the benchmark on larger and more capable models. The second is to test more checkpoints, including intermediate ones within each training phase, to see more precisely when each stage appears. The third is to train with reinforcement learning on these scenarios and watch how the teams respond. Several works suggest that reinforcement learning on outcomes is what drives collusion and related misbehaviour \citep{hammond2025multiagent, meinke2024scheming}, but our checkpoints point to a different split: the RL merge produced the most capable K2 checkpoint, whose agents barely talked, while supervised fine-tuning brought the contact and the breaches. Reinforcement learning may give agents the capability, and supervised fine-tuning the inclination to turn to colleagues and break the rule together; controlled training runs could test this.
 
 % ============================================================================
 % CODE AND DATA
@@ -419,7 +412,7 @@ Agent teams that refused a colleague's request broke the same rule once the offi
 \section*{Code and Data}
 
 \noindent
-The benchmark code, game configurations, all 6,160 game transcripts, scorer outputs and figure scripts are kept in the project repository and will be released after review. The scenarios contain no personal data. We see no information hazard beyond the general observation that agent teams can coordinate around rules.
+The benchmark code, game configurations, automatic scorer, analysis scripts and figure scripts are available at \url{https://github.com/ChenghengLi/CollusionBench}. The 6,160 game transcripts and scorer outputs (about 19\,GB) are not in the repository and are available from the author on request. The scenarios contain no personal data. We see no information hazard beyond the general observation that agent teams can coordinate around rules.
 
 % ============================================================================
 % AUTHOR CONTRIBUTIONS
@@ -435,7 +428,7 @@ C.L.C. designed the benchmark, ran all experiments, analysed the results and wro
 \section*{Acknowledgements}
 
 \noindent
-We thank Apart Research, Poseidon Research and AE Studio for organising the AI Collusion Research Sprint, and the EPFL Research Computing Platform for GPU time.
+We thank Apart Research, Poseidon Research and AE Studio for organising the AI Collusion Research Sprint.
 
 % ============================================================================
 % LLM USAGE STATEMENT
@@ -443,7 +436,7 @@ We thank Apart Research, Poseidon Research and AE Studio for organising the AI C
 \section*{LLM Usage Statement}
 
 \noindent
-Claude (Anthropic) was used throughout this project: to help write and debug the benchmark code, to run and monitor experiments, to read and label game transcripts while developing the scorer, to draft figures and text, and to search the literature. The agents inside the benchmark are the open models listed in Section~\ref{sec:setup}, not Claude. Every number in the paper was recomputed from the game logs with the automatic scorer, and every quote was checked against the transcripts. Errors found during internal review, including an invented example number and an overstated statistical claim, were corrected before submission.
+Claude (Anthropic) was used as a research assistant: it searched for information and related work, wrote code, and ran all the experiments. The study and experimental design were done by the author. Claude also wrote, reviewed and improved the text under the author's direction. The agents inside the benchmark are the open models listed in Section~\ref{sec:setup}, not Claude. Every number in the paper was recomputed from the game logs with the automatic scorer, and every quote was checked against the transcripts.
 
 
 % ============================================================================

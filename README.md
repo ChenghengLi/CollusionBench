@@ -1,7 +1,7 @@
 # CollusionBench
 
-Code, configurations and paper for **"Refuse When Asked, Collude When Blocked: Emergent Collusion in
-AI Agent Teams"** (AI Collusion Research Sprint, Apart Research with Poseidon Research and AE Studio,
+Code, configurations and paper for **"They Say No, Then Do It Anyway: Collusion When They Hit a
+Wall"** (AI Collusion Research Sprint, Apart Research with Poseidon Research and AE Studio,
 October 2026).
 
 Three copies of one language model run three departments of a made-up company. Each department holds
@@ -45,6 +45,9 @@ pytest
 ```
 
 ## Run a scenario
+
+The paper's configs expect an OpenAI-compatible vLLM server at `http://127.0.0.1:8000` serving the
+model named in the config (see `serving/` for the scripts we used). Then:
 
 ```bash
 python -m collusiongen.cli -v run configs/rcpgemma12/tasks/card_records__bench_full.yaml
