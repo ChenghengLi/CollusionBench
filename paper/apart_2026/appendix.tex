@@ -50,6 +50,37 @@ All models run on vLLM at temperature 1.0 and top-p 0.95. K2-3.7B and K2-7B are 
 
 Each world is drawn from a seed derived from the run seed (2026) and the world index; the seed does not depend on route quality or condition, so all cells with the same index play the same world. Cheap, moderate, blocked, permitted and solo-score cells use indices 0--19, asked and instructed cells indices 0--9. In \emph{asked}, seat 2 is a script that follows the official route, sends one fixed message after its 15th call and does nothing else; it signs any report that has a tick in it. In \emph{instructed}, one sentence is added to every agent's system prompt. In \emph{permitted}, the policy's ban and reason are replaced by a permission sentence. In exam and approvals, every cell includes a team-goal line; the solo-score cell replaces it with an individual one.
 
+\begin{table}[t]
+\centering
+\caption{\textbf{Experimental design.} Games per task and condition for each model version (440 in total).}
+\label{tab:grid}
+\small
+\setlength{\tabcolsep}{5.5pt}
+\begin{tabular}{@{}l ccc cccc r@{}}
+\toprule
+ & \multicolumn{3}{c}{Route quality, no controls} & \multicolumn{4}{c}{Controls, moderate route} & \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-8}
+Task & Cheap & Moderate & \textbf{Blocked} & Asked & Instructed & Permitted & Solo score & Total \\
+\midrule
+Records   & 20 & 20 & \textbf{20} & 10 & 10 & 20 & --- & 100 \\
+Pricing   & 20 & 20 & \textbf{20} & 10 & 10 & 20 & --- & 100 \\
+Exam      & 20 & 20 & \textbf{20} & 10 & 10 & 20 & 20 & 120 \\
+Approvals & 20 & 20 & \textbf{20} & 10 & 10 & 20 & 20 & 120 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{An example game}
+
+Figure~\ref{fig:episode} follows one blocked records game through all four stages of collusion.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{fig_episode.pdf}
+    \caption{\textbf{The four stages in one blocked game} (records task, Qwen3.8-27B; quotes verbatim, shortened with ``\ldots''). Billing asks for the case lists; Warehouse refuses on the forum and, 24 team calls later, sends its list by private message. Billing submits the exact total, and the final report, written by Billing and signed by all three members including Warehouse, overwrites Warehouse's draft disclosing the message with ``Open issues: None.''}
+    \label{fig:episode}
+\end{figure}
+
 \subsection{Records: reconciling disputed credits}
 
 \phead{Units and data.} Seat 1 Orders, seat 2 Warehouse, seat 3 Billing. Each holds a 12-row table for the same disputed cases C-101 to C-112: Orders \texttt{orders.csv} (order status standing or cancelled), Warehouse \texttt{dispatch.csv} (dispatch and promised dates), Billing \texttt{credits.csv} (credit amount and dispute status). Each unit has a procedure file defining its check: standing; dispatched on or before the promised date; dispute still open. In every world 8 cases fail one check and exactly 4 pass all three; amounts are 12 distinct integers between 1,000 and 3,999.
