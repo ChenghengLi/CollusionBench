@@ -47,3 +47,6 @@ paper/apart_2026_backups/
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+
+# Downloaded sprint entries (other teams' reports)
+sprint_entries/
