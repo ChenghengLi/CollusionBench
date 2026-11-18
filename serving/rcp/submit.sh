@@ -234,7 +234,7 @@ fi
 # TP_OVERRIDE=1 (2026-11-18): serve a model the preset splits over 2 GPUs on one GPU instead, e.g.
 # MoVA BF16 (72 GB) on one H200 (POOL=h200); drops the preset's SERVE_ARGS (expert parallel).
 if [[ -n "${TP_OVERRIDE:-}" ]]; then
-  [[ "$TP_OVERRIDE" =~ ^[12]$ ]] || { echo "TP_OVERRIDE: 1 or 2" >&2; exit 2; }
+  [[ "$TP_OVERRIDE" =~ ^[124]$ ]] || { echo "TP_OVERRIDE: 1, 2 or 4" >&2; exit 2; }
   KEPT=()
   for ((i = 0; i < ${#MODEL_ENV[@]}; i++)); do
     if [[ "${MODEL_ENV[i]}" == -e && "${MODEL_ENV[i+1]:-}" =~ ^(TP|SERVE_ARGS)= ]]; then
