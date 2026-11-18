@@ -260,7 +260,8 @@ for EXP in "$@"; do
   [[ "${MODEL:-3.7b}" =~ ^(32b|mova|movabf16|movahi|movasg|glimmer)$ ]] && { GPUS=2; MEM=160G; }
   [[ -n "${TP_OVERRIDE:-}" ]] && GPUS=$TP_OVERRIDE
   EXTRA=()
-  [[ "${MODEL:-3.7b}" == 3.7b ]] || EXTRA=(--existing-pvc "claimname=dlab-scratch,path=/mnt/dlab/scratch")
+  # every job mounts the lab scratch volume: run outputs live there (2026-11-18: the home quota filled)
+  EXTRA=(--existing-pvc "claimname=dlab-scratch,path=/mnt/dlab/scratch")
   if [[ "$EXP" == n2j || "$EXP" == n2s ]]; then
     GPUS=2; MEM=160G
     EXTRA=(--existing-pvc "claimname=dlab-scratch,path=/mnt/dlab/scratch")  # judge weights

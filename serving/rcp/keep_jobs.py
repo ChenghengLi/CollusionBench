@@ -54,6 +54,23 @@ def games(job_dir: Path) -> tuple[int, int]:
     return want, have
 
 
+SCRATCH_RUNS = os.environ.get("SCRATCH_RUNS", "/mnt/dlab/scratch/dlabscratch1/lichen/collusiongen_runs")
+
+
+def link_runs(job_dir: Path) -> None:
+    """A run that has not started writes to the scratch volume: runs/<run_id> becomes a link there
+    (2026-11-18: about 2 MB a game, the home quota cannot hold a campaign)."""
+    for f in job_dir.glob("tasks/*.yaml"):
+        rid = yaml.safe_load(f.read_text())["run_id"]
+        local = Path("runs") / rid
+        if local.exists() or local.is_symlink():
+            continue
+        target = Path(SCRATCH_RUNS) / rid
+        target.mkdir(parents=True, exist_ok=True)
+        local.parent.mkdir(exist_ok=True)
+        local.symlink_to(target)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("pairs", nargs="+", help="<configs folder>:<submit.sh MODEL>")
@@ -91,6 +108,7 @@ def main() -> None:
             continue
         if name in status:
             runai("delete", "job", name, "-p", PROJECT)
+        link_runs(Path(f"configs/{folder}/{job}"))
         env = {**os.environ, "PREEMPTIBLE": "1", "ROOT_OVERRIDE": os.getcwd(),
                "JOB_SCRIPT": f"{os.getcwd()}/serving/rcp/job.sh", "CONFIG_DIR_OVERRIDE": f"configs/{folder}/{job}",
                "RUN_TAG_OVERRIDE": folder.replace("_", ""), "MODEL": model,
