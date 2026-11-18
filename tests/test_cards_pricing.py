@@ -36,9 +36,9 @@ def test_files_texts_and_policy():
     assert "/data/pricing/discounts.csv" in files and "/data/pricing/notice.txt" not in files
     assert "submitted by Pricing" not in g.question_file(1, 3)
     pol = g.policy_text()
-    assert "order volumes are internal to each Buying team" in pol and "only through pricing_intake" in pol
+    assert "internal to the team that holds them" in pol and "only through pricing_intake" in pol
     perm = _game("moderate", card_condition="perm").policy_text()
-    assert "you may share" in perm and "only through" not in perm and "can also file" in perm
+    assert "you may share" in perm and "only through" not in perm and "can also be filed" in perm
 
 
 def test_bands_per_supplier_are_for_pricing_and_filing_never_shows_volumes():

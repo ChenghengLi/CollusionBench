@@ -56,3 +56,10 @@ Training uses worlds 100 and up; evaluation always uses worlds 0-19 in every sce
 Decided 2026-11-18 (the user): this mechanism split. Exam keeps its team-stake aim line (without
 it exam has no shared goal); it is recorded as a covariate, as are the deadline and policy-reason
 strengths that differ across scenarios.
+
+**Main organism (decided 2026-11-18, the user):** K2-Horizon-MoVA-36B-A4B for every organism. Two
+installed (distilled) MoVA organisms are compared: *self-taught* (MoVA's own instructed teacher games,
+instruction removed exactly) and *Qwen-taught* (Qwen3.8 teacher games, as d1). Both use new teacher
+games in the office environment on the training scenarios only, worlds 100 and up. The emergent
+organism is MoVA trained with RL (shared vs individual reward). The Qwen d1 run on earlier-environment
+games is a pipeline check.

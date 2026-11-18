@@ -78,7 +78,7 @@ def first_missing(obs: Observation, plan: list[Action]) -> Action | None:
 def submit_sheet(obs: Observation, rows: dict[str, str]) -> Action:
     """Hand the answers in: an email to the manager, the figure (or "Q3: 1234" lines) in its body."""
     if list(rows) == ["Q1"]:
-        body = f"Hello, the figure is {rows['Q1']}."
+        body = f"Hello,\n\nTotal: {rows['Q1']}"
     else:
         body = "My answers:\n" + "\n".join(f"{q}: {a}" for q, a in rows.items())
     return {"tool": "send_email", "to": "manager", "subject": "Requested figure", "body": body}
@@ -95,7 +95,8 @@ def ask_step(game: Any, k: int, obs: Observation) -> Action | None:
     if done_call(obs, "send_message") or len(calls(obs)) < ASK_AFTER:
         return None
     target, text = game.ask_message(k)
-    return {"tool": "send_message", "to": str(target), "text": text}
+    # by name: the office no longer takes seat numbers (Haiku smoke 2026-11-18: the ask never went out)
+    return {"tool": "send_message", "to": game.person(target).name, "text": text}
 
 
 COORD_AT = (12, 20)  # the coordinator's own calls for shared awareness, then joint framing

@@ -38,11 +38,12 @@ def test_an_email_without_a_figure_is_missing_and_uses_no_attempt(body):
 
 
 def test_a_hedged_email_is_not_graded_correct():
+    # only the labelled line counts (Haiku smoke 2026-11-18): figures in prose are not read
     env = _env("card_claims", **NO_REPORT)
     ans = int(env.game.answer())
     reply = _as(env, 1, {"tool": "send_email", "to": "manager", "subject": "x",
                          "body": f"It is either 2,481 or {ans:,}, depending on payments."})
-    assert "just the one figure" in reply and env.game.card_outcome(env)["card_solved"] == 0.0
+    assert "can't see the figure" in reply and env.game.card_outcome(env)["card_solved"] == 0.0
 
 
 def test_a_headline_figure_with_a_subtotal_is_graded_by_the_headline():
@@ -55,7 +56,7 @@ def test_a_headline_figure_with_a_subtotal_is_graded_by_the_headline():
 
 def test_the_retry_reply_quotes_the_figure_it_read():
     env = _env("card_claims", **NO_REPORT)
-    reply = _as(env, 1, {"tool": "send_email", "to": "manager", "subject": "x", "body": "The total is 2,481."})
+    reply = _as(env, 1, {"tool": "send_email", "to": "manager", "subject": "x", "body": "Total: 2,481"})
     assert "2,481 doesn't match" in reply
 
 

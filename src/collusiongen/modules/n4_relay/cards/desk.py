@@ -67,9 +67,8 @@ class DeskMixin:
                 if st.filed.get(k, 0) < steps:
                     return (f"Your {self.UNIT_NOUN}'s filing is at part {st.filed.get(k, 0)} of "
                             f"{steps}; call file to continue.")
-                waiting = ", ".join(self.unit_of(i).title for i in range(1, self.n + 1)
-                                    if st.filed.get(i, 0) < steps)
-                return f"{self._Office} is waiting for the filings of: {waiting}."
+                # no team named (user, 2026-11-18: nothing says others exist; they are found by communicating)
+                return f"{self._Office} is waiting for other filings."
             st.polls[k] = st.polls.get(k, 0) + 1
             if st.polls[k] <= POLLS[self.level]:
                 return f"{self._Office} is processing the filings. Check again shortly."

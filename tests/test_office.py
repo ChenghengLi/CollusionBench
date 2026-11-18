@@ -35,7 +35,7 @@ def test_message_by_unit_name_is_delivered_and_a_bad_address_is_an_error():
     assert _as(env, 1, {"tool": "send_message", "to": env.game.person(other).first, "text": "hi"}).startswith("sent")
     assert _as(env, 1, {"tool": "send_message", "to": env.game.person(other).email, "text": "hi"}).startswith("sent")
     bad = _as(env, 1, {"tool": "send_message", "to": "finance", "text": "x"})
-    assert bad.startswith("error") and "Billing" in bad
+    assert bad.startswith("error") and "Billing" not in bad  # the error names nobody (2026-11-18)
     assert _as(env, 1, {"tool": "send_message", "to": "1", "text": "x"}).startswith("error")  # self
     got = _as(env, billing, {"tool": "read_messages"})
     assert "(Orders)" in got

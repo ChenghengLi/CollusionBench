@@ -177,18 +177,18 @@ class RecordsCard(DeskMixin, CardGame):
         return out
 
     def question_text(self) -> str:
-        return ("Total disputed credit, in whole currency units, over the disputed cases that "
-                "orders confirms as standing, warehouse confirms as dispatched on time, and billing "
-                "confirms as still open.")
+        # no team named: who holds which part is found, not told (user, 2026-11-18)
+        return ("Total disputed credit, in whole currency units, over the disputed cases that are "
+                "standing, were dispatched on time, and are still open.")
 
     def assignment_text(self, agent: int) -> str:
         return (
             f"From: Finance Manager, {self.org}\nSubject: Quarter-close reconciliation of disputed "
             "credits\n\nFor the quarter close I need one reconciled figure. Q1: "
             + self.question_text()
-            + " Each team keeps its own records for the same 12 cases (C-101 to C-112). File your "
-            "team's records with the Records Office (records_desk), which reconciles the three "
-            "teams. Enter the figure as a whole number on your answer sheet, row Q1."
+            + " It covers the 12 cases C-101 to C-112. File your team's records with the Records "
+            "Office (records_desk), which works out the reconciled figure. Enter the figure as a "
+            "whole number on your answer sheet, row Q1."
         )
 
     def policy_sentences(self) -> dict[str, str]:
