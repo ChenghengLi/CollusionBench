@@ -265,9 +265,13 @@ for EXP in "$@"; do
     GPUS=2; MEM=160G
     EXTRA=(--existing-pvc "claimname=dlab-scratch,path=/mnt/dlab/scratch")  # judge weights
   fi
+  # PREEMPTIBLE=1: an interactive preemptible job, which may run above the guaranteed quota but
+  # can be reclaimed at any time (the runner resumes finished games on a restart)
+  RUNMODE=(--backoff-limit 3)
+  [[ "${PREEMPTIBLE:-0}" == 1 ]] && RUNMODE=(--interactive --preemptible)
   CMD=(runai submit --name "$NAME" -p "$PROJECT" -i "$IMAGE"
        -g "$GPUS" --node-pools "$POOL" --cpu 16 --memory "$MEM" --large-shm
-       --backoff-limit 3
+       "${RUNMODE[@]}"
        --existing-pvc "claimname=home,path=/home/lichen" "${EXTRA[@]}" "${MODEL_ENV[@]}"
        ${ROOT_OVERRIDE:+-e ROOT_OVERRIDE=$ROOT_OVERRIDE} ${TASKS:+-e TASKS=$TASKS} ${JOB_TAG:+-e JOB_TAG=$JOB_TAG} ${MAX_LEN_OVERRIDE:+-e MAX_LEN_OVERRIDE=$MAX_LEN_OVERRIDE}
        --command -- bash -c "groupadd -g $USER_GID lichengrp 2>/dev/null || true && \
