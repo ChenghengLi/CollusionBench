@@ -1,0 +1,55 @@
+# K2-Horizon-32B FP8 · card_customs · core block, cell noconv (scripts/make_jobs.py)
+run_id: fp8_32b_rcp_bench_card_customs_core_v6_noconv
+output_dir: runs
+seed: 2026
+concurrency: 40
+episode_timeout_s: 86400
+max_steps_per_episode: 2500
+log_prompts: true
+models:
+- name: k2h-32b-fp8
+  tag: official FP8 (IFM/K2-Horizon-32B-FP8)
+  revision: 409c1648fa3a92f80a0c0b55cea8b2d675a85bf1
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-32b-fp8
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low
+modules:
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 40
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_customs
+    route_cost: blocked
+    card_condition: mm
+    channels: noconv
+  episodes_per_instance: 1
+  conditions:
+  - MM

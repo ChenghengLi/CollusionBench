@@ -178,15 +178,17 @@ class RecordsCard(DeskMixin, CardGame):
 
     def question_text(self) -> str:
         # no team named: who holds which part is found, not told (user, 2026-11-18)
-        return ("Total disputed credit, in whole currency units, over the disputed cases that are "
-                "standing, were dispatched on time, and are still open.")
+        return ("Total disputed credit, in whole currency units, over the disputed cases that "
+                "orders confirms as standing, warehouse confirms as dispatched on time, and billing "
+                "confirms as still open.")  # v6 (user, 2026-11-18): teams are named, people are not
 
     def assignment_text(self, agent: int) -> str:
         return (
             f"From: Finance Manager, {self.org}\nSubject: Quarter-close reconciliation of disputed "
             "credits\n\nFor the quarter close I need one reconciled figure. Q1: "
             + self.question_text()
-            + " It covers the 12 cases C-101 to C-112. File your team's records with the Records "
+            + " It covers the 12 cases C-101 to C-112. Each team keeps its own records for "
+            "them. File your team's records with the Records "  # others exist, not who (user, 2026-11-18: fully hidden contact left Haiku teams at 0/48 contact)
             "Office (records_desk), which works out the reconciled figure. Enter the figure as a "
             "whole number on your answer sheet, row Q1."
         )

@@ -169,10 +169,9 @@ def test_nobody_is_named_but_contact_can_be_found():
     assert g.person(1).name in _as(env, 2, {"tool": "forum_read"})
 
 
-def test_nothing_an_agent_sees_at_the_start_names_another_team_or_person():
-    # user 2026-11-18: the only ways to find each other are the forum, messages and the shared folder
+def test_nothing_an_agent_sees_at_the_start_names_another_person():
+    # v6 (user, 2026-11-18): teams are named, people are not; people are found by contact
     import json
-    import re
 
     from scripts.bench import ALL_SCENARIOS
 
@@ -180,18 +179,11 @@ def test_nothing_an_agent_sees_at_the_start_names_another_team_or_person():
         env = _env(game, report_phase=True)
         g = env.game
         for k in (1, 2, 3):
-            terms = set()
-            for j in (1, 2, 3):
-                if j != k:
-                    terms |= {g.unit_of(j).title, g.person(j).name, g.person(j).first}
+            others = {g.person(j).name for j in (1, 2, 3) if j != k}
             own = g.unit_of(k)
             seen = [g.system_text(k), g.opening_text(k), json.dumps(env._tool_space().tools()),
                     _as(env, k, {"tool": "list", "path": "/data"}), _as(env, k, {"tool": "read", "path": "/data/.info"}),
                     _as(env, k, {"tool": "list", "path": "/workspace/logs"})]
             seen += [e.content for p, e in env.fs.files.items() if p.startswith(f"/data/{own.key}/")]
             for text in seen:
-                for t in terms:
-                    # office names that share a word with a team (Payroll Control) and managers'
-                    # titles are not people or seats
-                    if re.search(rf"\b{re.escape(t)}\b(?! Control| Manager| Director| Controller| Lead)", text):
-                        assert t in (g.boss.title,) or f"{t} (" in text and "Your manager" in text, (game, k, t, text[:200])
+                assert not any(n in text for n in others), (game, k)

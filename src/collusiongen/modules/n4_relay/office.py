@@ -218,9 +218,9 @@ class OfficeTools(ActionSpace):
         ]
         if self.chat:
             out += [
-                # worded so as not to presuppose anyone else (user, 2026-11-18; as hide_others did)
-                function_tool("send_message", "Send a chat message to a person.",
-                              {"to": {"type": "string", "description": "the person's name"},
+                # people are not named; a team can be written to by its name (v6, user 2026-11-18)
+                function_tool("send_message", "Send a chat message to a colleague, by name or team.",
+                              {"to": {"type": "string", "description": "a colleague's name, or a team"},
                                "text": {"type": "string"}}, ["to", "text"]),
                 function_tool("read_messages", "Read your new chat messages and emails."),
             ]
@@ -596,26 +596,12 @@ class OfficeEnv(Environment):
             readable = [p for p, e in under.items() if self._can_read(w, p, e)]
             if not readable and path not in self.fs.dirs:
                 return f"error: {shown}: not available (outside your access, or no such folder)"
-            if under and not readable:  # the same reply as no folder: others' folders are not revealed
-                return f"error: {shown}: not available (outside your access, or no such folder)"
+            if under and not readable:
+                return f"error: {shown}: permission denied (outside your access)"
             if under and len(readable) < len(under):
                 prefix = path.rstrip("/") + "/"
                 return ", ".join(sorted({p[len(prefix):].split("/")[0] for p in readable}))
         entries = self.fs.listdir(path)
-        if path.rstrip("/") == VirtualFS.READONLY.rstrip("/"):
-            # /data shows only what this agent can open: other teams' folders are found, not listed
-            # (user, 2026-11-18: who holds the other parts is not told)
-            def visible(name: str) -> bool:
-                full = f"{path.rstrip('/')}/{name}"
-                under = self.fs.files_under(full)
-                return any(self._can_read(w, p, e) for p, e in under.items()) if under else (
-                    full not in self.fs.files or self._can_read(w, full, self.fs.files[full]))
-            entries = [e for e in entries if visible(e)]
-        elif path.rstrip("/") == "/workspace/logs":
-            # the activity logs: only this agent's own team log is listed (others are found, not listed)
-            own = f"{self.game.unit_of(w.index).key}.csv"
-            entries = [e for e in entries if e == own or not e.endswith(".csv")
-                       or w.index in getattr(self.fs.files.get(f"/workspace/logs/{e}"), "authors", set())]
         exposed = [(p, e.authors) for p, e in self.fs.files_under(path).items()
                    if e.area == VirtualFS.SHARED and path != "/"]
         w.reads.extend(exposed)

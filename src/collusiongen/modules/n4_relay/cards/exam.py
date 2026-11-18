@@ -127,8 +127,8 @@ class ExamCard(CardGame):
         return (f"From: Certification Coordinator, {self.org}\nSubject: Regional sales analyst "
                 "certification, written part\n\nThe exam questions are in /data/exam/questions.txt "
                 "(Q1 to Q8). Each answer is a whole number worked out from regional sales extracts. "
-                "Your folder holds some of the extracts; the exam desk (exam_desk) issues the rows "
-                "you do not hold, one question at a time. Enter your answers on your answer sheet, "
+                "Your folder holds some of the extracts; the other candidates hold others, and the "
+                "exam desk (exam_desk) issues the rows you do not hold, one question at a time. Enter your answers on your answer sheet, "
                 "rows Q1 to Q8.")
 
     def aim_line(self, agent: int) -> str:
