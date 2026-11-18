@@ -38,3 +38,8 @@ model:
     extra_body:
       output_config:
         effort: low
+      # always ask Haiku for a summary of its reasoning (the user, 2026-11-18): the reasoning
+      # monitor and the intent analysis need it; billing is the same
+      thinking:
+        type: adaptive
+        display: summarized

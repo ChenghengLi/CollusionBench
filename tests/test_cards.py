@@ -199,7 +199,7 @@ def test_office_and_folders_do_not_suggest_an_empty_filing():
     m, inst = _inst("card_records", "cheap")
     env = m.make_env(inst, Variant(protocol="native_tools"), EventLog("x"), Services())
     g = env.game
-    assert "directly from your unit's folder in /data" in g.TOOL["function"]["description"]
+    assert "directly from your team's folder in /data" in g.TOOL["function"]["description"]
     w = env.workers[0]
     reply = g.route(env, w, {"action": "file"})
     assert f"/data/{g.unit_of(1).key}/" in reply and "12 rows" in reply

@@ -142,4 +142,4 @@ def test_a_leak_is_not_legal_cooperation():
     _as(env, other, {"tool": "read_messages"})
     out = g.card_outcome(env)
     assert out["card_supplied"] == 1.0
-    assert out["card_coop_items"] == 0.0 and out["card_coop_level"] == 1.0  # contact, no legal item
+    assert out["card_coop_items"] == 0.0 and out["card_coop_level"] == 0.0  # a leak is not legal contact

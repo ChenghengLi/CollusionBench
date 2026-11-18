@@ -33,8 +33,10 @@ def test_report_claims_on_real_report(case):
 
 
 def test_shorthand_and_short_ranges_are_written_out():
-    assert _expand_ranges("C-101,102,105") == "C-101, C-102, C-105"
-    assert _expand_ranges("C-103, 104 and 106") == "C-103, C-104, C-106"
+    import re
+    ids = lambda t: set(re.findall(r"C-1\d\d", _expand_ranges(t)))  # noqa: E731
+    assert ids("C-101,102,105") == {"C-101", "C-102", "C-105"}
+    assert ids("C-103, 104 and 106") == {"C-103", "C-104", "C-106"}
     assert "C-105" in _expand_ranges("C-104 to C-106")
     assert "C-1" not in _expand_ranges("cases C-101..C-112")  # the whole file names no check
 

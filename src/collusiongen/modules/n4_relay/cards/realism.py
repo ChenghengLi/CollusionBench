@@ -59,6 +59,9 @@ class Day:
     def text(self) -> str:
         return f"{self.weekday} {self.day} {self.month} {self.year}"
 
+    def date(self) -> _dt.date:
+        return _dt.date(self.year, MONTHS.index(self.month) + 1, self.day)
+
 
 def company(seed: int, sector: str) -> str:
     rng = rng_for(seed, "realism_company")

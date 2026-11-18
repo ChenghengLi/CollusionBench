@@ -55,7 +55,10 @@ def render(game: str, world: int = 0, level: str = "blocked", seat: int = 1, sol
     g = env.game
     if solo:
         seat = 2  # the model's seat in the solo form
-    obs = env.observe(env._seat(env.workers[seat - 1]))
+    # observe() renders the agent whose turn it is, so the seat's own texts come from the game
+    # (review 2026-11-18: --seat 2/3 and --solo showed seat 1's prompt)
+    from types import SimpleNamespace
+    obs = SimpleNamespace(system=g.system_text(seat), prompt=g.opening_text(seat))
     p = g.person(seat)
     out = [f"# {game} · world {world} · {level} · {'solo' if solo else 'team'}"
            f"{' · escalate' if escalation else ''}\n",
