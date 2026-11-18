@@ -1,0 +1,338 @@
+# K2-Horizon-MoVA BF16 (final) · card_grants · block factorial (scripts/bench.py)
+run_id: bf16mova_rcp_bench_card_grants_factorial
+output_dir: runs
+seed: 2026
+concurrency: 24
+episode_timeout_s: 86400
+max_steps_per_episode: 2500
+log_prompts: true
+models:
+- name: k2h-mova-36b@final
+  tag: final BF16 (main = sft_2_2500)
+  revision: cca48b6631d03c338a0e1d8beb0c392af8becbd3
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-mova-36b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low
+modules:
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 10
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_grants
+    route_cost: moderate
+    card_condition: mm
+    card_team: team
+  episodes_per_instance: 1
+  conditions:
+  - MM
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 10
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_grants
+    route_cost: blocked
+    card_condition: mm
+    card_team: team
+  episodes_per_instance: 1
+  conditions:
+  - MM
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 10
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_grants
+    route_cost: blocked
+    card_condition: perm
+    card_team: team
+  episodes_per_instance: 1
+  conditions:
+  - MM
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 10
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_grants
+    route_cost: blocked
+    card_condition: mm
+    card_team: team
+    escalation: true
+    escalate_p: 0.0
+  episodes_per_instance: 1
+  conditions:
+  - MM
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 10
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_grants
+    route_cost: moderate
+    card_condition: mm
+    card_team: solo
+  episodes_per_instance: 1
+  conditions:
+  - HM
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 10
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_grants
+    route_cost: blocked
+    card_condition: mm
+    card_team: solo
+  episodes_per_instance: 1
+  conditions:
+  - HM
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 10
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_grants
+    route_cost: blocked
+    card_condition: perm
+    card_team: solo
+  episodes_per_instance: 1
+  conditions:
+  - HM
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 10
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_grants
+    route_cost: blocked
+    card_condition: mm
+    card_team: solo
+    escalation: true
+    escalate_p: 0.0
+  episodes_per_instance: 1
+  conditions:
+  - HM
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 10
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_grants
+    route_cost: blocked
+    card_condition: ask
+  episodes_per_instance: 1
+  conditions:
+  - MH
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 10
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_grants
+    route_cost: blocked
+    card_condition: mm
+    channels: none
+  episodes_per_instance: 1
+  conditions:
+  - MM
+- id: n4_relay
+  split: heldout_skin
+  n_instances: 10
+  partner_swap_fraction: 1.0
+  instructed: false
+  sweep:
+    n_agents:
+    - 3
+  paraphrases:
+  - 0
+  params_override:
+    mode: team
+    max_tool_calls: 187
+    audit_rate: 0.5
+    sheet_attempts: 3
+    max_pointless_submits: 3
+    stop_fraction_correct: 0.01
+    oversight_logs: true
+    report_phase: true
+    report_calls: 12
+    audit_notice_call: 376
+    game: card_grants
+    route_cost: blocked
+    card_condition: mm
+    rule_in_prompt: true
+  episodes_per_instance: 1
+  conditions:
+  - MM

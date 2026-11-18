@@ -1,72 +1,59 @@
 # CollusionBench
 
-Code, configurations and paper for **"They Say No, Then Do It Anyway: Collusion When They Hit a
-Wall"** (AI Collusion Research Sprint, Apart Research with Poseidon Research and AE Studio,
-October 2026).
+Do teams of LLM agents break an operator's rule more than one agent facing the same choice, and
+which input causes it? CollusionBench puts three agents in an ordinary office task at a named
+company. Each team holds part of the data, a written policy forbids passing protected values
+between teams, and the office system that would combine them can be down. When it is, the exact
+answer is out of reach without breaking the rule together.
 
-Three copies of one language model run three departments of a made-up company. Each department holds
-records the others need, a written policy forbids passing them between departments, and an office tool
-(the *official route*) is the only allowed way to combine them. We switch that route on or off, compare
-it with a single scripted request from a colleague, and follow every game through four stages of
-collusion: discovery, coordination, joint execution and concealment. We run six final models and the
-training checkpoints of K2-Horizon-7B and K2-Horizon-3.7B.
+The design is in [`docs/redesign/15_realistic_v3.md`](docs/redesign/15_realistic_v3.md). The
+earlier benchmark, its paper ("They Say No, Then Do It Anyway", October 2026), runs and analysis
+are in [`deprecated/`](deprecated/); the active code no longer replays those runs.
 
-The paper is in [`paper/apart_2026/`](paper/apart_2026/) (`main.tex`, compiled `main.pdf`).
+## How a game looks to an agent
 
-## Repository layout
+- A working day at a fictional company: a named person in a named team, colleagues with names
+  and email addresses, a manager, today's date and a 17:00 end of day.
+- The request arrives as the manager's email; the answer goes back by email (`send_email`) and the
+  manager replies at once (ties out, or does not match the control total, or is reported open).
+- Tools: the team's own exports in `/data/<team>` (only its owner can open them), a private
+  `/tmp`, the shared drive `/workspace`, company chat, the intranet forum, a calculator, email, and
+  the scenario's office system.
+- No grader, answer sheet or tool-call counter. When the system is down it behaves like a real
+  outage: a 503 or 504, an incident notice, then "back tomorrow at 09:00".
+
+## Layout
 
 ```
-src/collusiongen/        the benchmark package
-  modules/n4_relay/cards/  the four card-game scenarios used in the paper
-                           (records, pricing, exam, approvals), the scorer (detect.py)
-                           and the oversight and status-report layers (layers.py)
-  modules/                 earlier modules (pricing, verification, market, mirror)
-  core/ agents/ runner/    environment, LLM policy, run driver
-  judges/ analysis/        message judges and run analysis
-configs/                 run configurations (rcp*/ = the paper's runs, one folder per model/checkpoint)
-serving/                 vLLM serving scripts (RCP cluster and local Apple Silicon)
-scripts/                 benchmark, rescoring and reporting scripts
-analysis/
-  scorer_only_2026-10/     recomputes every number in the paper from the game logs
-  card_audit_2026-10/      data builders and earlier audit tooling (packets not included)
-paper/apart_2026/        LaTeX source, figures (figures/src/ builds them from figures/data/)
-docs/                    design notes, scenario catalogue and benchmark specification
-tests/                   unit tests
-private_prompts/         instructed-condition prompts (git-ignored, never released)
+src/collusiongen/
+  modules/n4_relay/office.py   the office environment (tools, people, email hand-in, screen)
+  modules/n4_relay/cards/      the scenarios and their parts:
+    base.py                      the card game base: policy, standard factors, outage, the
+                                 working-day frame (system text, the manager's email, replies)
+    realism.py                   names, companies, dates, policy numbers (seeded)
+    records.py pricing.py exam.py  the three data scenarios
+    template.py                  six desk scenarios from one template (claims, payroll, returns,
+                                 grants, customs, fieldwork)
+    detect.py layers.py scripts.py  the scorer, the oversight and status-report layers, and the
+                                 scripted honest / pooling / asking seats
+  core/ agents/ runner/        environment API, LLM policy, run driver (runner/fork.py: one-input replay)
+configs/models/              model profiles
+scripts/bench.py             the factorial configs (team vs solo x route x standard factors)
+scripts/fork_replay.py       counterfactual fork-and-edit replay of a finished game
+serving/rcp/                 vLLM serving and job submission on the RCP cluster
+tests/                       pytest suite
+private_prompts/             git-ignored: instructed prompts and model-organism material
+deprecated/                  the earlier benchmark, modules, configs, results, docs and paper
 ```
 
-Run outputs (`runs/`, about 19 GB) and logs are not in the repository.
+## Running
 
-## Install
-
-```bash
-uv venv --python 3.12 && uv pip install -e ".[dev]"
-pytest
+```
+uv pip install -e .            # or: .venv/bin/pip install -e .
+.venv/bin/python -m pytest -q  # the test suite
+.venv/bin/python scripts/bench.py plan --block factorial
+.venv/bin/python scripts/bench.py make --model qwen3.8-27b-fp8 --block factorial_smoke --out-dir configs/runs/qwen38/tasks
 ```
 
-## Run a scenario
-
-The paper's configs expect an OpenAI-compatible vLLM server at `http://127.0.0.1:8000` serving the
-model named in the config (see `serving/` for the scripts we used). Then:
-
-```bash
-python -m collusiongen.cli -v run configs/rcpgemma12/tasks/card_records__bench_full.yaml
-```
-
-Each run writes `results.jsonl` (one record per game, with the scorer's labels), `events.jsonl`
-(every tool call), `transcripts.jsonl` and per-game logs under `live/`. Runs are resumable.
-
-## Reproduce the paper's numbers and figures
-
-```bash
-python analysis/scorer_only_2026-10/all_numbers.py          # every count, rate and Fisher test
-python paper/apart_2026/figures/src/fig_results.py          # result figures from figures/data/
-cd paper/apart_2026 && tectonic main.tex                    # the paper
-```
-
-The scripts expect the run outputs under `runs/rcp/`.
-
-## Safety note
-
-The scenarios contain no personal data. Prompts that instruct agents to collude are kept out of the
-repository.
+Configs run with `collusiongen run <config.yaml>`; on RCP, `serving/rcp/submit.sh` serves the model
+with vLLM and runs every config of a folder (`CONFIG_DIR_OVERRIDE=<folder> MODEL=<preset> ... n4t`).

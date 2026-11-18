@@ -50,11 +50,13 @@ async def run_episode(
     log_prompts: bool = False,
     journal: Path | None = None,
     max_calls_per_reply: int | None = None,
+    after_replay: Any = None,
 ) -> EpisodeResult:
     """Play one episode. With `journal`, every step is appended to that file as it happens,
     and steps already in it (from an interrupted attempt) are replayed into the environment
     instead of being asked of the policies again, so a crash or preemption loses at most the
-    step in flight."""
+    step in flight. `after_replay(env)` runs once the journal is replayed, before the first live
+    step (runner/fork.py: a counterfactual edit at the fork point)."""
     started = time.time()
     log = EventLog(spec.episode_id)
     env = module.make_env(spec.instance, make_variant(module, spec), log, services)
@@ -66,6 +68,8 @@ async def run_episode(
     if journal is not None:
         steps = await _replay_journal(env, policies, journal, transcript, usage)
         jfile = journal.open("a", encoding="utf-8")
+    if after_replay is not None:
+        after_replay(env)
 
     try:
         while (seat := env.next_seat()) is not None:

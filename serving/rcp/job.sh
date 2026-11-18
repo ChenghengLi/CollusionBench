@@ -16,7 +16,7 @@ set -euo pipefail
 
 EXP="${1:?usage: job.sh <a1|n2|a2|n4|n1|n2j|n1b|h1p|a1s|n2s|h1s|n4s|n4c|n4d|n4b|n4t>}"
 [[ "$EXP" =~ ^(a1|n2|a2|n4|n1|n2j|n1b|h1p|a1s|n2s|h1s|n4s|n4c|n4d|n4b|n4t)$ ]] || { echo "unknown experiment $EXP" >&2; exit 2; }
-ROOT=/home/lichen/collusiongen
+ROOT="${ROOT_OVERRIDE:-/home/lichen/collusiongen}"  # ROOT_OVERRIDE (submit.sh): run another copy of the code
 # The model under test. Defaults: K2-Horizon-3.7B final; submit.sh MODEL=7b passes the 7B.
 REPO="${MODEL_REPO:-IFM/K2-Horizon-3.7B}"
 REV="${MODEL_REV:-d6e5432c59637093c0e125e791d89ea4a0b53559}"

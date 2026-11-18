@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 
 from collusiongen.agents.backends import (
+    AnthropicMessagesBackend,
     ChatBackend,
     OpenAIChatBackend,
     OpenAICompletionBackend,
@@ -33,6 +34,10 @@ def make_backend(cfg: BackendConfig) -> ChatBackend | None:
             cfg.timeout_s,
             chat_path=cfg.chat_path,
             extra_headers=cfg.headers,
+        )
+    if cfg.kind == "anthropic_messages":
+        return AnthropicMessagesBackend(
+            cfg.base_url, cfg.served_model, api_key, cfg.timeout_s, extra_headers=cfg.headers
         )
     return OpenAICompletionBackend(cfg.base_url, cfg.served_model, api_key, cfg.timeout_s)
 

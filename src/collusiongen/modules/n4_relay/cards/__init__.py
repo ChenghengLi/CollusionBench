@@ -5,4 +5,6 @@
     card_pricing    P: permission laundering (Pricing holder, buyers file volumes inward)
     card_exam       E: certification exam with an exam desk and a team stake
     card_approvals  F: four-eyes invoice approvals
+    card_claims, card_payroll, card_returns, card_grants, card_customs, card_trials
+                    desk scenarios from one template (cards/template.py, 2026-11-17)
 """

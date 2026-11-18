@@ -77,6 +77,85 @@ case "${MODEL:-3.7b}" in
                    -e MODEL_NAME=qwen3.8-27b-fp8 -e MODEL_HF_HOME=$SCRATCH_HF
                    -e CONFIG_DIR=configs/rcpqwen38 -e RUN_TAG=qwen38
                    -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
+  # Model organism (2026-11-04): BF16 Qwen3.8-27B with the sft_v1 LoRA (epoch-1 checkpoint of the transformers+peft
+  # retrain, job_train_tf.sh) merged in by
+  # private_prompts/organisms/sft_v1/train/cluster/merge_lora.py; a local snapshot, no Hub revision.
+  # BF16 27B (about 54 GB): fits one 80 GB H100 (hybrid attention keeps the KV cache small); POOL=h200 also works.
+  qwen38lora) PREFIX=cgql
+        MODEL_ENV=(-e MODEL_REPO=local/qwen38-lora-tf-e1
+                   -e MODEL_REV=c34a9f1090bd99d11be37a77dc02994a0a1828cd
+                   -e MODEL_NAME=qwen38-lora-e1 -e MODEL_HF_HOME=$SCRATCH_HF
+                   -e CONFIG_DIR=configs/rcpqwen38lora -e RUN_TAG=qwen38lora
+                   -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
+  qwen38lora2) PREFIX=cgql2   # the same organism after epoch 2 (checkpoint-76)
+        MODEL_ENV=(-e MODEL_REPO=local/qwen38-lora-tf-e2
+                   -e MODEL_REV=a3db8e4eeba863c62410507b38c0e9454518b63f
+                   -e MODEL_NAME=qwen38-lora-e2 -e MODEL_HF_HOME=$SCRATCH_HF
+                   -e CONFIG_DIR=configs/rcpqwen38lora_e2 -e RUN_TAG=qwen38lora2
+                   -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
+  qwen38lora3) PREFIX=cgql3   # the same organism after epoch 3 (checkpoint-114)
+        MODEL_ENV=(-e MODEL_REPO=local/qwen38-lora-tf-e3
+                   -e MODEL_REV=9a168c842aa32f2ffe2a41339f54a3cb8c256d37
+                   -e MODEL_NAME=qwen38-lora-e3 -e MODEL_HF_HOME=$SCRATCH_HF
+                   -e CONFIG_DIR=configs/rcpqwen38lora_e3 -e RUN_TAG=qwen38lora3
+                   -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
+  # The three organisms after the anti-doom-loop (FTPO) stage (2026-11-05): antidoom LoRA merged by
+  # private_prompts/organisms/sft_v1/antidoom/job_train.sh; revisions = sha1 of qwen38-lora-tf-e<k>-antidoom.
+  qwen38lora1ad) PREFIX=cgqa1
+        MODEL_ENV=(-e MODEL_REPO=local/qwen38-lora-tf-e1-antidoom
+                   -e MODEL_REV=5bfdca8807ab449f549303c35012db7fd1e997be
+                   -e MODEL_NAME=qwen38-lora-e1-ad -e MODEL_HF_HOME=$SCRATCH_HF
+                   -e CONFIG_DIR=configs/rcpqwen38lora_e1ad -e RUN_TAG=qwen38lora1ad
+                   -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
+  qwen38lora2ad) PREFIX=cgqa2
+        MODEL_ENV=(-e MODEL_REPO=local/qwen38-lora-tf-e2-antidoom
+                   -e MODEL_REV=feb8d3bf797a8a4496dfee9aa9572bf952ad21a4
+                   -e MODEL_NAME=qwen38-lora-e2-ad -e MODEL_HF_HOME=$SCRATCH_HF
+                   -e CONFIG_DIR=configs/rcpqwen38lora_e2ad -e RUN_TAG=qwen38lora2ad
+                   -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
+  qwen38lora3ad) PREFIX=cgqa3
+        MODEL_ENV=(-e MODEL_REPO=local/qwen38-lora-tf-e3-antidoom
+                   -e MODEL_REV=36de84dda12cc0de1055664d2e1cd98ed5ed8433
+                   -e MODEL_NAME=qwen38-lora-e3-ad -e MODEL_HF_HOME=$SCRATCH_HF
+                   -e CONFIG_DIR=configs/rcpqwen38lora_e3ad -e RUN_TAG=qwen38lora3ad
+                   -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
+  # GRPO-RLVR pilot checkpoints on the e3 organism (2026-11-06): adapters/step000<k> merged by
+  # private_prompts/organisms/grpo_rlvr/job_merge.sh; revisions = sha1 of qwen38-grpo-e3-step<k>.
+  qwen38grpo5) PREFIX=cgqg5
+        MODEL_ENV=(-e MODEL_REPO=local/qwen38-grpo-s5
+                   -e MODEL_REV=96f9795c7db7409fa39786541797ea0b4c72bd76
+                   -e MODEL_NAME=qwen38-grpo-s5 -e MODEL_HF_HOME=$SCRATCH_HF
+                   -e CONFIG_DIR=configs/rcpqwen38grpo_s5 -e RUN_TAG=qwen38grpo5
+                   -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
+  qwen38grpo7) PREFIX=cgqg7
+        MODEL_ENV=(-e MODEL_REPO=local/qwen38-grpo-s7
+                   -e MODEL_REV=8f02f41e5cd620ca848227c4877570dc46767061
+                   -e MODEL_NAME=qwen38-grpo-s7 -e MODEL_HF_HOME=$SCRATCH_HF
+                   -e CONFIG_DIR=configs/rcpqwen38grpo_s7 -e RUN_TAG=qwen38grpo7
+                   -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
+  qwen38grpo9) PREFIX=cgqg9
+        MODEL_ENV=(-e MODEL_REPO=local/qwen38-grpo-s9
+                   -e MODEL_REV=ac1c1295002bcb49f2d991544f8c959fc754b804
+                   -e MODEL_NAME=qwen38-grpo-s9 -e MODEL_HF_HOME=$SCRATCH_HF
+                   -e CONFIG_DIR=configs/rcpqwen38grpo_s9 -e RUN_TAG=qwen38grpo9
+                   -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
+  # Qwen3.6-35B-A3B (2026-11-18): Qwen's official FP8 build of the mixture-of-experts model (35B total,
+  # ~3B active), one H100, parsers from its model card. Candidate for the RL organism.
+  qwen36moe) PREFIX=cgqm
+        MODEL_ENV=(-e MODEL_REPO=Qwen/Qwen3.6-35B-A3B-FP8
+                   -e MODEL_REV=c653bba46dfa06e9658dcc0b0dc87fe4685f14a2
+                   -e MODEL_NAME=qwen3.6-35b-a3b-fp8 -e MODEL_HF_HOME=$SCRATCH_HF
+                   -e CONFIG_DIR=configs/rcpqwen36moe -e RUN_TAG=qwen36moe
+                   -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
+  # Any merged Qwen3.8-27B organism in the scratch HF cache (2026-11-17, distill_v1):
+  # LOCAL_NAME=qwen38-distill-d1-e2 LOCAL_REV=<40 hex> MODEL=qwen38local CONFIG_DIR_OVERRIDE=... submit.sh n4t
+  qwen38local) PREFIX=cgqx
+        [[ "${LOCAL_NAME:-}" =~ ^qwen38-[a-z0-9-]+$ && "${LOCAL_REV:-}" =~ ^[0-9a-f]{40}$ ]] \
+          || { echo "MODEL=qwen38local needs LOCAL_NAME=qwen38-... and a 40-hex LOCAL_REV" >&2; exit 2; }
+        MODEL_ENV=(-e MODEL_REPO=local/$LOCAL_NAME -e MODEL_REV=$LOCAL_REV
+                   -e MODEL_NAME=$LOCAL_NAME -e MODEL_HF_HOME=$SCRATCH_HF
+                   -e CONFIG_DIR=configs/unused -e RUN_TAG=${LOCAL_NAME//-/_}
+                   -e REASONING_PARSER=qwen3 -e TOOL_PARSER=qwen3_coder) ;;
   # Meta's Muse Glimmer 30B (2026-10-24): dense, official BF16 weights (no official 8-bit build; the
   # FP8 one is RedHatAI's), over 2 H100s, with the parsers from its vLLM recipe. Its effort is set
   # in the system prompt ("Reasoning strength: low", configs/models/muse-glimmer-30b.yaml).
@@ -137,6 +216,35 @@ if [[ -n "${REP:-}" ]]; then
   MODEL_ENV=("${KEPT[@]}" -e "CONFIG_DIR=${BASE_DIR}_rep$REP" -e "RUN_TAG=${BASE_TAG}_rep$REP")
 fi
 
+# CONFIG_DIR_OVERRIDE=<dir> [RUN_TAG_OVERRIDE=<tag>]: the model's preset served as usual, but the
+# task configs (and log folder) of another directory, e.g. the private organism-data runs.
+if [[ -n "${CONFIG_DIR_OVERRIDE:-}" ]]; then
+  [[ "${RUN_TAG_OVERRIDE:-x}" =~ ^[a-z0-9_]+$ ]] || { echo "RUN_TAG_OVERRIDE: [a-z0-9_]+" >&2; exit 2; }
+  KEPT=()
+  for ((i = 0; i < ${#MODEL_ENV[@]}; i++)); do
+    if [[ "${MODEL_ENV[i]}" == -e && "${MODEL_ENV[i+1]:-}" =~ ^(CONFIG_DIR|RUN_TAG)= ]]; then
+      i=$((i + 1)); continue
+    fi
+    KEPT+=("${MODEL_ENV[i]}")
+  done
+  MODEL_ENV=("${KEPT[@]}" -e "CONFIG_DIR=$CONFIG_DIR_OVERRIDE"
+             -e "RUN_TAG=${RUN_TAG_OVERRIDE:-$(basename "$CONFIG_DIR_OVERRIDE")}")
+fi
+
+# TP_OVERRIDE=1 (2026-11-18): serve a model the preset splits over 2 GPUs on one GPU instead, e.g.
+# MoVA BF16 (72 GB) on one H200 (POOL=h200); drops the preset's SERVE_ARGS (expert parallel).
+if [[ -n "${TP_OVERRIDE:-}" ]]; then
+  [[ "$TP_OVERRIDE" =~ ^[12]$ ]] || { echo "TP_OVERRIDE: 1 or 2" >&2; exit 2; }
+  KEPT=()
+  for ((i = 0; i < ${#MODEL_ENV[@]}; i++)); do
+    if [[ "${MODEL_ENV[i]}" == -e && "${MODEL_ENV[i+1]:-}" =~ ^(TP|SERVE_ARGS)= ]]; then
+      i=$((i + 1)); continue
+    fi
+    KEPT+=("${MODEL_ENV[i]}")
+  done
+  MODEL_ENV=("${KEPT[@]}" -e "TP=$TP_OVERRIDE")
+fi
+
 # Each job runs a private copy of job.sh: the home volume is NFS, so replacing job.sh while a
 # job reads it kills that job with "Stale file handle" (seen 2026-10-07).
 JOB_SRC="${JOB_SCRIPT:-/home/lichen/collusiongen/serving/rcp/job.sh}"
@@ -150,6 +258,7 @@ for EXP in "$@"; do
   cp "$JOB_SRC" "$SNAP" && chmod 700 "$SNAP"
   GPUS=1; MEM=96G
   [[ "${MODEL:-3.7b}" =~ ^(32b|mova|movabf16|movahi|movasg|glimmer)$ ]] && { GPUS=2; MEM=160G; }
+  [[ -n "${TP_OVERRIDE:-}" ]] && GPUS=$TP_OVERRIDE
   EXTRA=()
   [[ "${MODEL:-3.7b}" == 3.7b ]] || EXTRA=(--existing-pvc "claimname=dlab-scratch,path=/mnt/dlab/scratch")
   if [[ "$EXP" == n2j || "$EXP" == n2s ]]; then
@@ -160,7 +269,7 @@ for EXP in "$@"; do
        -g "$GPUS" --node-pools "$POOL" --cpu 16 --memory "$MEM" --large-shm
        --backoff-limit 3
        --existing-pvc "claimname=home,path=/home/lichen" "${EXTRA[@]}" "${MODEL_ENV[@]}"
-       ${TASKS:+-e TASKS=$TASKS} ${JOB_TAG:+-e JOB_TAG=$JOB_TAG} ${MAX_LEN_OVERRIDE:+-e MAX_LEN_OVERRIDE=$MAX_LEN_OVERRIDE}
+       ${ROOT_OVERRIDE:+-e ROOT_OVERRIDE=$ROOT_OVERRIDE} ${TASKS:+-e TASKS=$TASKS} ${JOB_TAG:+-e JOB_TAG=$JOB_TAG} ${MAX_LEN_OVERRIDE:+-e MAX_LEN_OVERRIDE=$MAX_LEN_OVERRIDE}
        --command -- bash -c "groupadd -g $USER_GID lichengrp 2>/dev/null || true && \
 useradd -u $USER_UID -g $USER_GID -d /home/lichen -s /bin/bash -M lichen 2>/dev/null || true && \
 groupadd -g $LAB_GID dlabapp 2>/dev/null || true && usermod -aG dlabapp lichen && \

@@ -27,7 +27,7 @@ class _Strict(BaseModel):
 
 
 class BackendConfig(_Strict):
-    kind: Literal["openai_chat", "openai_completion", "trivial"]
+    kind: Literal["openai_chat", "openai_completion", "anthropic_messages", "trivial"]
     base_url: str | None = None
     served_model: str | None = None
     api_key_env: str | None = None  # name of an env var; keys never live in configs
@@ -75,8 +75,10 @@ class ModelConfig(_Strict):
 
     @model_validator(mode="after")
     def _protocol_fits_backend(self) -> ModelConfig:
-        if self.action_protocol == "native_tools" and self.backend.kind != "openai_chat":
-            raise ValueError(f"{self.name}: native_tools needs an openai_chat backend")
+        if self.action_protocol == "native_tools" and self.backend.kind not in (
+            "openai_chat", "anthropic_messages"
+        ):
+            raise ValueError(f"{self.name}: native_tools needs a chat backend with tools")
         return self
 
 

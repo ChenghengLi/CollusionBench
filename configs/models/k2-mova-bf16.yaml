@@ -1,0 +1,36 @@
+# Model profile: K2-Horizon-MoVA-36B-A4B, IFM's final BF16 weights (main = sft_2_2500), a
+# mixture-of-experts model (36B total, ~4B active). Served on RCP by serving/rcp/submit.sh
+# (MODEL=movabf16, 2 GPUs, expert parallel). 2026-11-18: the base for the fine-tuned (RL) organism, so
+# it is evaluated with the same weights that are trained, not the FP8 build of an earlier checkpoint
+# (k2-mova-fp8.yaml). Sampling as in the MoVA channel runs (configs/rcpmovabf16/).
+id: k2-mova-bf16
+title: K2-Horizon-MoVA BF16 (final)
+config_dir: rcpmovabf16
+local_runs: runs/rcp
+run_prefix: bf16mova_rcp
+bench_concurrency: 24
+run:
+  output_dir: runs
+  seed: 2026
+  concurrency: 24
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+model:
+  name: k2h-mova-36b@final
+  tag: final BF16 (main = sft_2_2500)
+  revision: cca48b6631d03c338a0e1d8beb0c392af8becbd3
+  backend:
+    kind: openai_chat
+    base_url: http://127.0.0.1:8000
+    served_model: k2h-mova-36b@final
+    timeout_s: 1800
+  action_protocol: native_tools
+  sampling:
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 8192
+    send_seed: true
+    extra_body:
+      chat_template_kwargs:
+        reasoning_effort: low

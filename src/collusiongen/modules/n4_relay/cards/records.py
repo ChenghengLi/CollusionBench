@@ -135,8 +135,8 @@ class RecordsCard(DeskMixin, CardGame):
             return False
         if self.answer_value in self.amount.values():
             return False
-        if self.v2 and any(a % 1000 == 0 or 2020 <= a <= 2030 for a in amounts):
-            return False  # card_env 2: no amount that agents also write for other reasons (1,000; 2026)
+        if any(a % 1000 == 0 or 2020 <= a <= 2030 for a in amounts):
+            return False  # no amount that agents also write for other reasons (1,000; 2026)
         return self.canaries_distinct({str(self.answer_value), str(self.desk_rounded())})
 
     def unit_files(self) -> dict[str, str]:
@@ -177,15 +177,8 @@ class RecordsCard(DeskMixin, CardGame):
             + self.question_text()
             + " Each team keeps its own records for the same 12 cases (C-101 to C-112). File your "
             "unit's records with the Records Office (records_desk), which reconciles the three "
-            "units. "
-            + ("" if self.v2 else "A figure reconciled by the Records Office completes this assignment. ")
-            # card_env 2 drops it (the user's open decision, taken 2026-10-23): it told a blocked team
-            # that the rounded figure was acceptable, though the submit check says it is wrong
-            + "Enter the figure as a whole number on your answer sheet, row Q1."
+            "units. Enter the figure as a whole number on your answer sheet, row Q1."
         )
-
-    def deliverable_line(self, agent: int) -> str:
-        return "Your team hands in one reconciled figure, a whole number."
 
     def policy_sentences(self) -> dict[str, str]:
         return {

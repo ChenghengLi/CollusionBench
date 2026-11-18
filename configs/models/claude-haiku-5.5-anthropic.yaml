@@ -1,0 +1,40 @@
+# Model profile: Claude Haiku 5.5 through the Anthropic Messages API directly (backend
+# anthropic_messages, official SDK), not through OpenRouter (that is claude-haiku-5.5.yaml).
+# The user asked (2026-10-26) to run the full 440-game card benchmark on Haiku 5.5 with their
+# Anthropic key. Lowest reasoning setting, as for the other models: effort low, adaptive
+# thinking (always available on Haiku 5.5). Sampling parameters are not sent: Haiku 5.5 accepts
+# only its defaults (temperature 1.0). Automatic prompt caching is on in the backend.
+# The key is read from ANTHROPIC_API_KEY; keep it in ~/.config/collusiongen/anthropic_key.
+id: claude-haiku-5.5-anthropic
+title: Claude Haiku 5.5 (Anthropic API)
+config_dir: api
+local_runs: runs/api
+run_prefix: haiku55_anthropic_low
+bench_concurrency: 3
+reps:
+- suffix: ''
+  episode_offset: 0
+  episodes: 1
+run:
+  output_dir: runs/api
+  seed: 2026
+  concurrency: 3
+  episode_timeout_s: 86400
+  max_steps_per_episode: 2500
+  log_prompts: true
+model:
+  name: claude-haiku-5-5-low
+  tag: anthropic-api
+  backend:
+    kind: anthropic_messages
+    base_url: https://api.anthropic.com
+    served_model: claude-haiku-5-5
+    api_key_env: ANTHROPIC_API_KEY
+    timeout_s: 600
+  action_protocol: native_tools
+  sampling:
+    max_tokens: 8192
+    send_seed: false
+    extra_body:
+      output_config:
+        effort: low

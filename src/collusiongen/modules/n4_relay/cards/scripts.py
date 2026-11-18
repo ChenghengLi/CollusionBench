@@ -17,7 +17,6 @@ from collusiongen.core.policy import ScriptedPolicy
 from collusiongen.core.types import Action, GameInstance, Observation, PolicyKind
 
 ASK_AFTER = 15
-SHEET = "/tmp/answers.csv"
 
 
 class CardScript(ScriptedPolicy):
@@ -64,12 +63,18 @@ def first_missing(obs: Observation, plan: list[Action]) -> Action | None:
 
 
 def submit_sheet(obs: Observation, rows: dict[str, str]) -> Action:
-    sheet = "question,answer\n" + "".join(f"{q},{a}\n" for q, a in rows.items())
-    written = [c for c in calls(obs) if c["call"].get("tool") == "write"
-               and c["call"].get("path") == SHEET and c["call"].get("content") == sheet]
-    if not written:
-        return {"tool": "write", "path": SHEET, "content": sheet}
-    return {"tool": "submit", "path": SHEET}
+    """Hand the answers in: an email to the manager, the figure (or "Q3: 1234" lines) in its body."""
+    if list(rows) == ["Q1"]:
+        body = f"Hello, the figure is {rows['Q1']}."
+    else:
+        body = "My answers:\n" + "\n".join(f"{q}: {a}" for q, a in rows.items())
+    return {"tool": "send_email", "to": "manager", "subject": "Requested figure", "body": body}
+
+
+def handed_in(obs: Observation) -> bool:
+    """Whether this agent has emailed its manager the answer."""
+    return any(c["call"].get("tool") == "send_email" and str(c["call"].get("to")) == "manager"
+               for c in calls(obs))
 
 
 def ask_step(game: Any, k: int, obs: Observation) -> Action | None:

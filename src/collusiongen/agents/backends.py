@@ -239,6 +239,163 @@ class OpenAIChatBackend:
         await self._client.aclose()
 
 
+def to_anthropic(messages: list[Message]) -> tuple[str, list[Message]]:
+    """OpenAI-format chat (system, user, assistant with tool_calls, tool) -> Anthropic Messages
+    (top-level system, tool_use blocks, tool_result blocks in the following user turn).
+    Consecutive tool results share one user turn, as the Messages API requires."""
+    system = "\n\n".join(str(m["content"]) for m in messages if m["role"] == "system")
+    out: list[Message] = []
+    for m in messages:
+        role = m["role"]
+        if role == "system":
+            continue
+        if role == "tool":
+            block = {
+                "type": "tool_result",
+                "tool_use_id": m["tool_call_id"],
+                "content": str(m["content"]) or "(empty)",
+            }
+            if out and out[-1]["role"] == "user" and out[-1]["content"][-1]["type"] == "tool_result":
+                out[-1]["content"].append(block)
+            else:
+                out.append({"role": "user", "content": [block]})
+            continue
+        blocks: list[dict[str, Any]] = []
+        if m.get("content"):
+            blocks.append({"type": "text", "text": str(m["content"])})
+        for tc in m.get("tool_calls") or []:
+            fn = tc["function"]
+            args = fn.get("arguments") or {}
+            blocks.append({
+                "type": "tool_use",
+                "id": tc["id"],
+                "name": fn["name"],
+                "input": json.loads(args) if isinstance(args, str) else args,
+            })
+        if not blocks:
+            blocks.append({"type": "text", "text": "(no reply)" if role == "assistant" else "(empty)"})
+        out.append({"role": role, "content": blocks})
+    return system, out
+
+
+def anthropic_tools(tools: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """OpenAI function tools -> Anthropic tool definitions."""
+    return [
+        {
+            "name": t["function"]["name"],
+            "description": t["function"].get("description", ""),
+            "input_schema": t["function"].get("parameters") or {"type": "object", "properties": {}},
+        }
+        for t in tools
+    ]
+
+
+_STOP = {"tool_use": "tool_calls", "end_turn": "stop", "max_tokens": "length"}
+
+
+class AnthropicMessagesBackend:
+    """Claude through the Anthropic Messages API (official SDK). Messages and tools arrive in
+    OpenAI format and are converted. Top-level automatic prompt caching is on: the game history
+    is rebuilt identically each turn, so every turn reads the previous turn's prefix. Sampling
+    parameters are not sent (the current Claude models accept only their defaults); effort and
+    thinking settings go in `sampling.extra_body` (e.g. output_config: {effort: low})."""
+
+    def __init__(
+        self,
+        base_url: str,
+        model: str,
+        api_key: str | None = None,
+        timeout: float = 600.0,
+        extra_headers: dict[str, str] | None = None,
+    ) -> None:
+        import anthropic
+
+        self._anthropic = anthropic
+        self.model = model
+        self._client = anthropic.AsyncAnthropic(
+            api_key=api_key,
+            base_url=base_url.rstrip("/"),
+            timeout=timeout,
+            max_retries=0,  # retries are handled below, with the same rules as the other backends
+            default_headers=extra_headers or None,
+        )
+
+    async def chat(
+        self,
+        messages: list[Message],
+        sampling: SamplingConfig,
+        seed: int | None = None,  # not supported by the API
+        tools: list[dict[str, Any]] | None = None,
+    ) -> Completion:
+        a = self._anthropic
+        system, msgs = to_anthropic(messages)
+        kwargs: dict[str, Any] = {"model": self.model, "max_tokens": sampling.max_tokens,
+                                  "messages": msgs}
+        if system:
+            kwargs["system"] = system
+        if tools:
+            kwargs["tools"] = anthropic_tools(tools)
+        extra = {"cache_control": {"type": "ephemeral"}, **sampling.extra_body}
+        delay, attempt, limited, last = 1.0, 0, 0, ""
+        while attempt < 8 and limited < RATE_LIMIT_ATTEMPTS:
+            wait = delay * (0.5 + random.random())
+            try:
+                resp = await self._client.messages.create(**kwargs, extra_body=extra)
+                break
+            except a.RateLimitError as exc:
+                limited += 1
+                last = str(exc)[:300]
+                wait = _retry_after(exc.response, wait)
+            except (a.AuthenticationError, a.PermissionDeniedError, a.NotFoundError) as exc:
+                log.error("MODEL OR KEY UNAVAILABLE: %s", str(exc)[:300])
+                raise BackendError(f"anthropic: model or key unavailable: {exc}", exc.status_code) from exc
+            except a.BadRequestError as exc:
+                if "credit balance" in str(exc).lower():
+                    log.error("ACCOUNT OUT OF CREDIT: %s", str(exc)[:300])
+                    raise BackendError(f"anthropic: account out of credit: {exc}", 400) from exc
+                raise BackendError(f"anthropic: {str(exc)[:500]}", 400, terminal=True) from exc
+            except a.APIStatusError as exc:
+                if exc.status_code < 500 and exc.status_code not in _RETRYABLE:
+                    raise BackendError(f"anthropic: {str(exc)[:500]}", exc.status_code, terminal=True) from exc
+                attempt += 1
+                last = f"HTTP {exc.status_code}: {str(exc)[:300]}"
+            except (a.APIConnectionError, a.APITimeoutError) as exc:
+                attempt += 1
+                last = repr(exc)[:300]
+            await asyncio.sleep(wait)
+            delay = min(delay * 2, 60.0)
+        else:
+            raise BackendError(
+                f"anthropic: gave up after {attempt} failed attempts and {limited} rate limits; "
+                f"last error {last}"
+            )
+        u = resp.usage
+        cache_w = u.cache_creation_input_tokens or 0
+        cache_r = u.cache_read_input_tokens or 0
+        usage = {
+            "prompt_tokens": u.input_tokens + cache_w + cache_r,
+            "completion_tokens": u.output_tokens,
+            "total_tokens": u.input_tokens + cache_w + cache_r + u.output_tokens,
+            "input_tokens": u.input_tokens,
+            "cache_creation_input_tokens": cache_w,
+            "cache_read_input_tokens": cache_r,
+        }
+        text = "".join(b.text for b in resp.content if b.type == "text")
+        reasoning = "\n".join(b.thinking for b in resp.content if b.type == "thinking" and b.thinking)
+        calls = [{"name": b.name, "arguments": dict(b.input)} for b in resp.content
+                 if b.type == "tool_use" and isinstance(b.input, dict)]
+        return Completion(
+            text=text,
+            reasoning=reasoning,
+            usage=usage,
+            finish_reason=_STOP.get(resp.stop_reason or "", resp.stop_reason or ""),
+            tool_calls=calls,
+        )
+
+    async def aclose(self) -> None:
+        await self._client.close()
+
+
 def render_scaffold(messages: list[Message]) -> str:
     """Fixed plain-text scaffold for pretraining tags (no chat template, 8K context)."""
     blocks = []
